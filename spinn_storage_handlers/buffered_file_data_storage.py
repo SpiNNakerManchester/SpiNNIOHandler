@@ -1,4 +1,5 @@
 import os
+
 from io import BlockingIOError
 
 from spinn_storage_handlers.abstract_classes.abstract_buffered_data_storage \
