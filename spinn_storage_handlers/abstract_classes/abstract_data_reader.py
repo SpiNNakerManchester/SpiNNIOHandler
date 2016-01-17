@@ -50,6 +50,16 @@ class AbstractDataReader(object):
         pass
 
     @abstractmethod
+    def readall(self):
+        """ Read the rest of the bytes from the underlying stream
+
+        :return: The bytes read
+        :rtype: bytearray
+        :raise IOError: If there is an error obtaining the bytes
+        """
+        pass
+
+    @abstractmethod
     def tell(self):
         """ Returns the position of the file cursor
 

@@ -23,6 +23,11 @@ class FileDataReader(AbstractDataReader):
         """
         return self._file_container.read(n_bytes)
 
+    def readall(self):
+        """ See :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readall`
+        """
+        return self._file_container.read_all()
+
     def readinto(self, data):
         """ See :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readinto`
         """
