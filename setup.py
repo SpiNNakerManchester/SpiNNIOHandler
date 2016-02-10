@@ -2,6 +2,7 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+exec(open("spinn_storage_handlers/_version.py").read())
 
 setup(
     name="SpiNNStorageHandlers",
