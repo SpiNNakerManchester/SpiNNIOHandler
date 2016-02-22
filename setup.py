@@ -2,11 +2,10 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-exec(open("spinn_storage_handlers/_version.py").read())
 
 setup(
     name="SpiNNStorageHandlers",
-    version=__version__,
+    version="2016.001",
     description="I/O handler classes for SpiNNaker software stack",
     url="https://github.com/SpiNNakerManchester/SpiNNStorageHandlers",
     license="GNU GPLv3.0",

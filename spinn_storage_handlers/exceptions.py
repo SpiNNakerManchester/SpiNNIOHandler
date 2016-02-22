@@ -9,7 +9,7 @@ class DataWriteException(Exception):
         :param message: A message to indicate what when wrong
         :type message: str
         """
-        print message
+        Exception.__init__(message)
 
 
 class DataReadException(Exception):
@@ -23,7 +23,7 @@ class DataReadException(Exception):
         :param message: A message to indicate what when wrong
         :type message: str
         """
-        print message
+        Exception.__init__(message)
 
 
 class BufferedBytearrayOperationNotImplemented(Exception):
@@ -36,4 +36,4 @@ class BufferedBytearrayOperationNotImplemented(Exception):
         :param message: A message to indicate what when wrong
         :type message: str
         """
-        print message
+        Exception.__init__(message)

@@ -1,4 +1,5 @@
-from spinn_storage_handlers.abstract_classes.abstract_byte_reader import AbstractByteReader
+from spinn_storage_handlers.abstract_classes.abstract_byte_reader \
+    import AbstractByteReader
 
 
 class BigEndianByteArrayByteReader(AbstractByteReader):
@@ -7,7 +8,7 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
 
     def __init__(self, data):
         """
-        
+
         :param data: The byte array to read the data from
         :type data: bytearray
         """
@@ -15,7 +16,8 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
         self._read_pointer = 0
 
     def read_byte(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_byte`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_byte`
         """
         if self._read_pointer >= len(self._data):
             raise EOFError("End of stream")
@@ -24,7 +26,8 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
         return value
 
     def read_bytes(self, size=None):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_bytes`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_bytes`
         """
         if size is None:
             if self._read_pointer == len(self._data):
@@ -41,7 +44,8 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
         return value
 
     def read_short(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_short`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_short`
         """
         if self._read_pointer + 1 >= len(self._data):
             raise EOFError("Not enough bytes to read a short")
@@ -51,7 +55,8 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
         return value
 
     def read_int(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_int`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_int`
         """
         if self._read_pointer + 3 >= len(self._data):
             raise EOFError("Not enough bytes to read an int")
@@ -63,7 +68,8 @@ class BigEndianByteArrayByteReader(AbstractByteReader):
         return value
 
     def read_long(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_long`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_long`
         """
         if self._read_pointer + 7 >= len(self._data):
             raise EOFError("Not enough bytes to read a long")

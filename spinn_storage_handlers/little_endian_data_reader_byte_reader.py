@@ -1,4 +1,5 @@
-from spinn_storage_handlers.abstract_classes.abstract_byte_reader import AbstractByteReader
+from spinn_storage_handlers.abstract_classes.abstract_byte_reader \
+    import AbstractByteReader
 
 
 class LittleEndianDataReaderByteReader(AbstractByteReader):
@@ -42,7 +43,8 @@ class LittleEndianDataReaderByteReader(AbstractByteReader):
         return data
 
     def read_short(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_short`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_short`
         """
         try:
             value = self.read_byte() | (self.read_byte() << 8)
@@ -51,23 +53,25 @@ class LittleEndianDataReaderByteReader(AbstractByteReader):
             raise EOFError("Not enough bytes to read a short")
 
     def read_int(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_int`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_int`
         """
         try:
-            value = (self.read_byte() | (self.read_byte() << 8)
-                     | (self.read_byte() << 16) | (self.read_byte() << 24))
+            value = (self.read_byte() | (self.read_byte() << 8) |
+                     (self.read_byte() << 16) | (self.read_byte() << 24))
             return value
         except EOFError:
             raise EOFError("Not enough bytes to read a short")
 
     def read_long(self):
-        """ See :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_long`
+        """ See\
+            :py:meth:`spinnman.data.abstract_byte_reader.AbstractByteReader.read_long`
         """
         try:
-            value = (self.read_byte() | (self.read_byte() << 8)
-                     | (self.read_byte() << 16) | (self.read_byte() << 24)
-                     | (self.read_byte() << 32) | (self.read_byte() << 40)
-                     | (self.read_byte() << 48) | (self.read_byte() << 56))
+            value = (self.read_byte() | (self.read_byte() << 8) |
+                     (self.read_byte() << 16) | (self.read_byte() << 24) |
+                     (self.read_byte() << 32) | (self.read_byte() << 40) |
+                     (self.read_byte() << 48) | (self.read_byte() << 56))
             return value
         except EOFError:
             raise EOFError("Not enough bytes to read a short")

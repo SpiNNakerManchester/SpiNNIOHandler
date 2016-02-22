@@ -12,24 +12,26 @@ class FileDataReader(AbstractDataReader):
         """
         :param filename: The file to read
         :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataReadException: If the file\
-                    cannot found or opened for reading
+        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
+                    file cannot found or opened for reading
         """
         self._file_container = BufferedFileDataStorage(filename)
 
     def read(self, n_bytes):
-        """ See :py:meth:
-        `data_specification.abstract_data_reader.AbstractDataReader.read`
+        """ See\
+            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.read`
         """
         return self._file_container.read(n_bytes)
 
     def readall(self):
-        """ See :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readall`
+        """ See\
+            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readall`
         """
         return self._file_container.read_all()
 
     def readinto(self, data):
-        """ See :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readinto`
+        """ See\
+            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readinto`
         """
         return self._file_container.readinto(data)
 
@@ -43,10 +45,10 @@ class FileDataReader(AbstractDataReader):
 
     def close(self):
         """ Closes the file
-        
+
         :return: Nothing is returned:
         :rtype: None
-        :raise spinn_storage_handlers.exceptions.DataReadException: If the file\
-                    cannot be closed
+        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
+                    file cannot be closed
         """
         self._file_container.close()

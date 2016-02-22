@@ -9,8 +9,8 @@ class FileDataWriter(AbstractDataWriter):
         """
         :param filename: The file to write to
         :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataWriteException: If the file\
-                    cannot found or opened for writing
+        :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
+                    file cannot found or opened for writing
         """
         self._file_container = BufferedFileDataStorage(filename)
 
@@ -33,8 +33,8 @@ class FileDataWriter(AbstractDataWriter):
 
         :return: Nothing is returned
         :rtype: None
-        :raise spinn_storage_handlers.exceptions.DataWriteException: If the file\
-                    cannot be closed
+        :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
+                    file cannot be closed
         """
         self._file_container.close()
 
