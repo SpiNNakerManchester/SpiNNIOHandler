@@ -12,24 +12,15 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
         reading and one for writing
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, mode="rb"):
         self._filename = filename
         self._file_size = 0
         self._read_pointer = 0
         self._write_pointer = 0
 
-        # check if file exists, or create it
-        if not os.path.isfile(filename):
-            try:
-                temp_handler = open(filename, 'wb')
-            except:
-                raise DataReadException(
-                    "Unable to open file {}".format(filename))
-            temp_handler.close()
-
         # open the file using the real handler
         try:
-            self._file = open(filename, 'r+b')
+            self._file = open(filename, mode)
         except:
             raise DataReadException(
                 "Unable to open file {}".format(filename))

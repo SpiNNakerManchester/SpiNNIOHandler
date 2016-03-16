@@ -12,7 +12,7 @@ class FileDataWriter(AbstractDataWriter):
         :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
                     file cannot found or opened for writing
         """
-        self._file_container = BufferedFileDataStorage(filename)
+        self._file_container = BufferedFileDataStorage(filename, "w+b")
 
     def write(self, data):
         """ See \

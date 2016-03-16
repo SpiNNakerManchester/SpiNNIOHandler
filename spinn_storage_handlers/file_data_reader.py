@@ -15,7 +15,7 @@ class FileDataReader(AbstractDataReader):
         :raise spinn_storage_handlers.exceptions.DataReadException: If the\
                     file cannot found or opened for reading
         """
-        self._file_container = BufferedFileDataStorage(filename)
+        self._file_container = BufferedFileDataStorage(filename, "rb")
 
     def read(self, n_bytes):
         """ See\
