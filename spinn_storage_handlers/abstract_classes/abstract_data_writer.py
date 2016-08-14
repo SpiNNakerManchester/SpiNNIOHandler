@@ -8,6 +8,8 @@ class AbstractDataWriter(object):
     """ Abstract writer used to write data somewhere
     """
 
+    __slots__ = []
+
     @classmethod
     def __subclasshook__(cls, othercls):
         """ Checks if all the abstract methods are present on the subclass

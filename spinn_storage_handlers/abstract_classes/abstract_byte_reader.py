@@ -12,6 +12,8 @@ class AbstractByteReader(object):
         being achieved.
     """
 
+    __slots__ = []
+
     @abstractmethod
     def is_at_end(self):
         """ returns true if the reader is currently at the end of the byte

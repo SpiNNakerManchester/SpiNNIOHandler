@@ -10,6 +10,17 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage):
         one for reading and one for writing
     """
 
+    __slots__ = [
+        # ?????????????
+        "_data_storage",
+
+        # ??????????
+        "_read_pointer",
+
+        # ??????????
+        "_write_pointer"
+    ]
+
     def __init__(self):
         self._data_storage = bytearray()
         self._read_pointer = 0

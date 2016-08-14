@@ -7,6 +7,8 @@ from six import add_metaclass
 class AbstractDataReader(object):
     """ Abstract reader used to read data from somewhere
     """
+
+    __slots__ = []
     
     @classmethod
     def __subclasshook__(cls, othercls):

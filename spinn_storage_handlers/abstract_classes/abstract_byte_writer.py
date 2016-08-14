@@ -12,6 +12,8 @@ class AbstractByteWriter(object):
         unless a specific endianness is being achieved.
     """
 
+    __slots__ = []
+
     @abstractmethod
     def write_byte(self, byte_value):
         """ Writes the lowest order byte of the given value

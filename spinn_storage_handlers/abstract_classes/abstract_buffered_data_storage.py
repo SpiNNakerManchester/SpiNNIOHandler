@@ -15,6 +15,8 @@ class AbstractBufferedDataStorage(object):
     """ An object that can store and read back buffered data
     """
 
+    __slots__ = []
+
     @abstractmethod
     def write(self, data):
         """ Store data in the data storage in the position indicated by\

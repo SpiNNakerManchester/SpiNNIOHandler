@@ -8,6 +8,11 @@ class FileDataReader(AbstractDataReader):
     """ A reader that can read data from a file
     """
 
+    __slots__ = [
+        # the container for the file
+        "_file_container"
+    ]
+
     def __init__(self, filename):
         """
         :param filename: The file to read

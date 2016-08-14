@@ -5,6 +5,12 @@ from spinn_storage_handlers.abstract_classes.abstract_data_writer import \
 
 
 class FileDataWriter(AbstractDataWriter):
+
+    __slots__ = [
+        # the file container
+        "_file_container"
+    ]
+
     def __init__(self, filename):
         """
         :param filename: The file to write to
