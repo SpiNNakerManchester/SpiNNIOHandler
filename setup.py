@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name="SpiNNStorageHandlers",
-    version="2016.001",
+    version="3.0.0",
     description="I/O handler classes for SpiNNaker software stack",
     url="https://github.com/SpiNNakerManchester/SpiNNStorageHandlers",
     license="GNU GPLv3.0",
