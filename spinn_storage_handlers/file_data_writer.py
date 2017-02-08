@@ -5,6 +5,11 @@ from spinn_storage_handlers.abstract_classes.abstract_data_writer import \
 
 
 class FileDataWriter(AbstractDataWriter):
+    """
+    :param filename: str The file to write to
+    :raise spinn_storage_handlers.exceptions.DataReadException: If the\
+        file cannot found or opened for reading
+    """
 
     __slots__ = [
         # the file container
@@ -12,12 +17,6 @@ class FileDataWriter(AbstractDataWriter):
     ]
 
     def __init__(self, filename):
-        """
-        :param filename: The file to write to
-        :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
-                    file cannot found or opened for writing
-        """
         self._file_container = BufferedFileDataStorage(filename, "w+b")
 
     def write(self, data):
