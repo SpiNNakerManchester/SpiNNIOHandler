@@ -1,4 +1,4 @@
-import py.test
+# import py.test
 from spinn_storage_handlers.file_data_reader import FileDataReader
 
 
