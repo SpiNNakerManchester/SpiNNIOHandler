@@ -29,7 +29,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
         "_file"
     ]
 
-    def __init__(self, filename, mode="rb"):
+    def __init__(self, filename, mode):
         self._filename = filename
         self._file_size = 0
         self._read_pointer = 0

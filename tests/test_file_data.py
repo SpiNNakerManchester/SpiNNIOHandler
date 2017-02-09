@@ -50,11 +50,8 @@ def test_write_file(temp_dir):
 def test_readwrite_file_buffer(temp_dir):
     p = temp_dir.join("test_readwrite_file_buffer.txt")
     assert p.check(exists=0)
-    p.write_binary("")
-    assert p.check(exists=1)
-    assert p.size() == 0
 
-    bfds = BufferedFileDataStorage(str(p))
+    bfds = BufferedFileDataStorage(str(p), "w+b")
 
     assert p.check(exists=1)
     assert p.size() == 0
