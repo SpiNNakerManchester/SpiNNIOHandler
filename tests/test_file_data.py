@@ -5,7 +5,7 @@ from spinn_storage_handlers.buffered_file_data_storage \
     import BufferedFileDataStorage
 
 
-testdata = "ABcd1234"
+testdata = bytearray("ABcd1234")
 
 
 @pytest.yield_fixture
@@ -60,7 +60,7 @@ def test_readwrite_file_buffer(temp_dir):
     assert bfds is not None
     assert bfds._file_len == 0
 
-    bfds.write(bytearray(testdata))
+    bfds.write(testdata)
     bfds.read_all()  # Force flush to the OS
 
     assert p.size() == len(testdata)
