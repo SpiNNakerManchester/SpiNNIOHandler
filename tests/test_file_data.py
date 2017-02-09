@@ -12,6 +12,7 @@ testdata = "ABcd1234"
 def temp_dir(tmpdir):
     # Directory for data
     dir = tmpdir.mkdir("test_file_data")
+    assert dir.check(exists=1)
 
     yield dir
 
@@ -20,6 +21,7 @@ def temp_dir(tmpdir):
         dir.remove(ignore_errors=True)
     except:
         pass
+    assert dir.check(exists=0)
 
 
 def test_read_file(temp_dir):
@@ -59,6 +61,7 @@ def test_readwrite_file_buffer(temp_dir):
     assert bfds._file_len == 0
 
     bfds.write(bytearray(testdata))
+    bfds.read_all()  # Force flush to the OS
 
     assert p.size() == len(testdata)
     assert bfds._file_len == len(testdata)
@@ -66,4 +69,4 @@ def test_readwrite_file_buffer(temp_dir):
 
     bfds.close()
 
-    assert p.check(exists=0)
+    assert p.check(exists=1)
