@@ -8,8 +8,8 @@ from spinn_storage_handlers.exceptions import DataReadException, \
 
 
 class BufferedFileDataStorage(AbstractBufferedDataStorage):
-    """ Data storage based on a temporary file with two pointers, one for\
-        reading and one for writing
+    """Data storage based on a temporary file with two pointers, one for
+    reading and one for writing.
     """
 
     __slots__ = [
@@ -38,25 +38,24 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
         # open the file using the real handler
         try:
             self._file = open(filename, mode)
-        except:
+        except IOError as e:
             raise DataReadException(
-                "Unable to open file {}".format(filename))
+                "unable to open file {0}; {1}".format(filename, e))
 
     def write(self, data):
         if not (isinstance(data, bytearray) or isinstance(data, str)):
             raise DataWriteException(
-                "BufferedFileDataStorage.write: Data to write is not in "
-                "a suitable format. Current data format: "
-                "{0:s}".format(type(data)))
+                "data to write is not in a suitable format (bytearray or "
+                "string). Current data format: {0:s}".format(type(data)))
 
         self._file.seek(self._write_pointer)
 
         try:
             self._file.write(data)
-        except:
-            raise IOError(
-                "BufferedFileDataStorage.write: unable to write {0:d} "
-                "bytes to file {1:s}".format(len(data), self._filename))
+        except IOError as e:
+            raise DataWriteException(
+                "unable to write {0:d} bytes to file {1:s}: caused by {2}"
+                .format(len(data), self._filename, e))
 
         self._file_size += len(data)
         self._write_pointer += len(data)
@@ -66,10 +65,10 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
 
         try:
             data = self._file.read(data_size)
-        except BlockingIOError:
-            raise IOError(
-                "BufferedFileDataStorage.read: unable to read {0:d} "
-                "bytes from file {1:s}".format(data_size, self._filename))
+        except BlockingIOError as e:
+            raise DataReadException(
+                "unable to read {0:d} bytes from file {1:s}; {2}"
+                .format(data_size, self._filename, e))
 
         self._read_pointer += data_size
         return data
@@ -82,10 +81,10 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
 
         try:
             length = self._file.readinto(data)
-        except BlockingIOError:
+        except BlockingIOError as e:
             raise IOError(
-                "BufferedFileDataStorage.readinto: unable to read {0:d} bytes "
-                "from file {1:s}".format(len(data), self._filename))
+                "unable to read {0:d} bytes from file {1:s}; {2}"
+                .format(len(data), self._filename, e))
 
         self._read_pointer += length
         return length
@@ -139,14 +138,13 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
     def close(self):
         try:
             self._file.close()
-        except Exception:
+        except Exception as e:
             DataReadException(
-                "BufferedFileDataStorage.close: File {} cannot "
-                "be closed".format(self._filename))
+                "file {0} cannot be closed; {1}".format(self._filename, e))
 
     @property
     def _file_len(self):
-        """ The size of the file
+        """The size of the file.
 
         :return: The size of the file
         :rtype: int
