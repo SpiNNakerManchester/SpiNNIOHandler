@@ -45,3 +45,7 @@ To install as a development version in a `virtualenv`, with the `virutalenv`
 enabled, run:
 
     python setup.py develop
+
+Documentation
+=============
+[Python code documentation](http://spinnstoragehandlers.readthedocs.io)
