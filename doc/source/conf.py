@@ -186,7 +186,7 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'spinn_storage_handlers_doc'
+htmlhelp_basename = 'SpiNNStorageHandlersdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -206,7 +206,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'spinn_storage_handlers.tex', u'spinn_storage_handlers Documentation',
+  ('index', 'SpiNNStorageHandlers.tex', u'SpiNNStorageHandlers Documentation',
    u'', 'manual'),
 ]
 
@@ -236,7 +236,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'spinn_storage_handlers', u'spinn_storage_handlers Documentation',
+    ('index', 'SpiNNStorageHandlers', u'SpiNNStorageHandlers Documentation',
      [u''], 1)
 ]
 
@@ -250,8 +250,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'spinn_storage_handlers', u'spinn_storage_handlers Documentation',
-   u'', 'spinn_storage_handlers', '',
+  ('index', 'SpiNNStorageHandlers', u'SpiNNStorageHandlers Documentation',
+   u'', 'SpiNNStorageHandlers', '',
    'Miscellaneous'),
 ]
 
@@ -271,7 +271,7 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'spinn_storage_handlers'
+epub_title = u'SpiNNStorageHandlers'
 epub_author = u''
 epub_publisher = u''
 epub_copyright = u'2014-2017'
