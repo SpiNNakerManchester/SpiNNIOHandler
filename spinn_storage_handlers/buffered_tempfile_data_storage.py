@@ -5,8 +5,8 @@ from spinn_storage_handlers.abstract_classes.abstract_buffered_data_storage \
 
 
 class BufferedTempfileDataStorage(AbstractBufferedDataStorage):
-    """ Data storage based on a temporary file with two pointers, one for\
-        reading and one for writing
+    """Data storage based on a temporary file with two pointers, one for
+    reading and one for writing.
     """
 
     __slots__ = [

@@ -9,7 +9,7 @@ class AbstractDataReader(object):
     """
 
     __slots__ = []
-    
+
     @classmethod
     def __subclasshook__(cls, othercls):
         """ Checks if all the abstract methods are present on the subclass
@@ -21,14 +21,14 @@ class AbstractDataReader(object):
                     if not any(key in B.__dict__ for B in othercls.__mro__):
                         return NotImplemented
         return True
-    
+
     @abstractmethod
     def read(self, n_bytes):
         """ Read some bytes of data from the underlying storage.  Will block\
             until some bytes are available, but might not return the full\
             n_bytes.  The size of the returned array indicates how many\
             bytes were read.
-        
+
         :param n_bytes: The number of bytes to read
         :type n_bytes: int
         :return: An array of bytes
@@ -36,13 +36,13 @@ class AbstractDataReader(object):
         :raise IOError: If an error occurs reading from the underlying storage
         """
         pass
-    
+
     @abstractmethod
     def readinto(self, data):
         """ Read some bytes of data from the underlying storage into a\
             pre-defined array.  Will block until some bytes are available,\
             but may not fill the array completely.
-        
+
         :param data: The place where the data is to be stored
         :type data: bytearray
         :return: The number of bytes stored in data
