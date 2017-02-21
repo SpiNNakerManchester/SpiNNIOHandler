@@ -48,4 +48,6 @@ enabled, run:
 
 Documentation
 =============
-[Python code documentation](http://spinnstoragehandlers.readthedocs.io)
+[SpiNNStorageHandlers python documentation](http://spinnstoragehandlers.readthedocs.io)
+
+[Combined python documentation](http://spinnakermanchester.readthedocs.io)
