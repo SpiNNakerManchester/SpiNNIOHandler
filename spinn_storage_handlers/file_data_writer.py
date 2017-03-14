@@ -13,6 +13,7 @@ class FileDataWriter(AbstractDataWriter):
 
     def __init__(self, filename):
         """
+
         :param filename: The file to write to
         :type filename: str
         :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
@@ -37,7 +38,6 @@ class FileDataWriter(AbstractDataWriter):
     def close(self):
         """ Closes the file
 
-        :return: Nothing is returned
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataWriteException: If the\
                     file cannot be closed
@@ -48,6 +48,5 @@ class FileDataWriter(AbstractDataWriter):
     def filename(self):
         """
         property method
-        :return:
         """
         return self._file_container.filename

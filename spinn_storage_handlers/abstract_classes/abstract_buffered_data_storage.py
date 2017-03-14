@@ -24,7 +24,6 @@ class AbstractBufferedDataStorage(object):
 
         :param data: the data to be stored
         :type data: bytearray
-        :return: None
         :rtype: None
         """
         pass
@@ -76,7 +75,6 @@ class AbstractBufferedDataStorage(object):
                 * os.SEEK_CUR which means seek relative to the current\
                   read position
                 * os.SEEK_END which means seek relative to the buffer's end
-        :return: None
         :rtype: None
         """
         pass
@@ -92,7 +90,6 @@ class AbstractBufferedDataStorage(object):
                 * os.SEEK_CUR which means seek relative to the current\
                   write position
                 * os.SEEK_END which means seek relative to the buffer's end
-        :return: None
         :rtype: None
         """
         pass
@@ -129,7 +126,6 @@ class AbstractBufferedDataStorage(object):
     def close(self):
         """ Closes the data storage
 
-        :return: Nothing is returned:
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataReadException: If the \
                data storage cannot be closed

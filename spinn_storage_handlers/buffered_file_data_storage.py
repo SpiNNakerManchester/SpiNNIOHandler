@@ -159,6 +159,6 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage):
     def filename(self):
         """
         property method
-        :return:
+
         """
         return self._filename

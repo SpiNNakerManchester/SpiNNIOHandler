@@ -45,3 +45,9 @@ To install as a development version in a `virtualenv`, with the `virutalenv`
 enabled, run:
 
     python setup.py develop
+
+Documentation
+=============
+[SpiNNStorageHandlers python documentation](http://spinnstoragehandlers.readthedocs.io)
+
+[Combined python documentation](http://spinnakermanchester.readthedocs.io)

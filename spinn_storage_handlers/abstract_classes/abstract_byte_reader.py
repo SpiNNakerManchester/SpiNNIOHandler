@@ -19,8 +19,8 @@ class AbstractByteReader(object):
         """ returns true if the reader is currently at the end of the byte
         reader
 
-        :return: returns true if the reader is currently at the end of the byte
-        reader false otherwise
+        :return: returns true if the reader is currently at the end\
+            of the byte reader false otherwise
         :rtype: bool
         """
 

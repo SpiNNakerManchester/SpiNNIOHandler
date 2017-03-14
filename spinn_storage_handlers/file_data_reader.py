@@ -15,6 +15,7 @@ class FileDataReader(AbstractDataReader):
 
     def __init__(self, filename):
         """
+
         :param filename: The file to read
         :type filename: str
         :raise spinn_storage_handlers.exceptions.DataReadException: If the\
@@ -51,7 +52,6 @@ class FileDataReader(AbstractDataReader):
     def close(self):
         """ Closes the file
 
-        :return: Nothing is returned:
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataReadException: If the\
                     file cannot be closed

@@ -1,7 +1,3 @@
-# import sys
-import os
-from sphinx import apidoc
-
 # -*- coding: utf-8 -*-
 #
 # data_allocation documentation build configuration file, created by
@@ -15,6 +11,10 @@ from sphinx import apidoc
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
+
+# import sys
+import os
+from sphinx import apidoc
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
