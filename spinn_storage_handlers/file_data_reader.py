@@ -6,10 +6,6 @@ from spinn_storage_handlers.abstract_classes.abstract_data_reader import \
 
 class FileDataReader(AbstractDataReader):
     """ A reader that can read data from a file
-
-        :param filename: The file to read
-        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
-                    file cannot found or opened for reading
     """
 
     __slots__ = [
@@ -18,6 +14,13 @@ class FileDataReader(AbstractDataReader):
     ]
 
     def __init__(self, filename):
+        """
+
+        :param filename: The file to read
+        :type filename: str
+        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
+                    file cannot found or opened for reading
+        """
         self._file_container = BufferedFileDataStorage(filename, "rb")
 
     def read(self, n_bytes):
@@ -49,7 +52,6 @@ class FileDataReader(AbstractDataReader):
     def close(self):
         """ Closes the file
 
-        :return: Nothing is returned:
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataReadException: If the\
                     file cannot be closed
