@@ -25,6 +25,10 @@ for dirname, dirnames, filenames in os.walk(main_package_dir):
             package_data[package].append("*.{}".format(ext))
             break
 
+print "packages"
+print packages
+print "package_data"
+print package_data
 
 setup(
     name="SpiNNStorageHandlers",
