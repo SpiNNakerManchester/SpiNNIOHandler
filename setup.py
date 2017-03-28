@@ -6,7 +6,7 @@ from collections import defaultdict
 import os
 
 # Build a list of all project modules, as well as supplementary files
-main_package = "spinn_front_end_common"
+main_package = "spinn_storage_handlers"
 data_extensions = {".aplx", ".xml"}
 main_package_dir = os.path.join(os.path.dirname(__file__), main_package)
 start = len(main_package_dir)
@@ -24,11 +24,6 @@ for dirname, dirnames, filenames in os.walk(main_package_dir):
                 main_package, dirname[start:].replace(os.sep, '.'))
             package_data[package].append("*.{}".format(ext))
             break
-
-print "packages"
-print packages
-print "package_data"
-print package_data
 
 setup(
     name="SpiNNStorageHandlers",
