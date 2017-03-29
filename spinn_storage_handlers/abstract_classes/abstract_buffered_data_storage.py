@@ -1,7 +1,8 @@
 # general imports
-from abc import ABCMeta
-from abc import abstractmethod
 from six import add_metaclass
+
+from spinn_utilities.abstract_base import AbstractBase, abstractmethod
+
 
 import os
 import logging
@@ -10,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-@add_metaclass(ABCMeta)
+@add_metaclass(AbstractBase)
 class AbstractBufferedDataStorage(object):
     """ An object that can store and read back buffered data
     """

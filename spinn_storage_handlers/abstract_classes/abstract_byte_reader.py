@@ -1,9 +1,9 @@
-from abc import ABCMeta
-from abc import abstractmethod
 from six import add_metaclass
 
+from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 
-@add_metaclass(ABCMeta)
+
+@add_metaclass(AbstractBase)
 class AbstractByteReader(object):
     """ An abstract reader of bytes.  Note that due to endianness concerns,\
         the methods of this reader should be used directly for the appropriate\
