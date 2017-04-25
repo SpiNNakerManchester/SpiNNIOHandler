@@ -27,12 +27,12 @@ for dirname, dirnames, filenames in os.walk(main_package_dir):
 
 setup(
     name="SpiNNStorageHandlers",
-    version="3.0.0",
+    version="1!4.0.0a1",
     description="I/O handler classes for SpiNNaker software stack",
     url="https://github.com/SpiNNakerManchester/SpiNNStorageHandlers",
     license="GNU GPLv3.0",
     packages=packages,
     package_data=package_data,
-    install_requires=['SpiNNUtilities >= 3.0.0, < 4.0.0',
+    install_requires=['SpiNNUtilities >= 4.0.0a1, < 5.0.0',
                       'six']
 )
