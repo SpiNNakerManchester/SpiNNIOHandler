@@ -2,7 +2,7 @@ import spinn_utilities
 import spinn_storage_handlers
 
 
-def test_import_all():
+def test_compare_versions():
     spinn_utilities_parts = spinn_utilities.__version__.split('.')
     spinn_storage_handlers_parts = spinn_storage_handlers.\
         __version__.split('.')
@@ -12,4 +12,5 @@ def test_import_all():
 
 
 if __name__ == '__main__':
-    test_import_all()
+    test_compare_versions()
+
