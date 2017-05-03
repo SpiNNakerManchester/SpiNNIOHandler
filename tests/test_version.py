@@ -13,4 +13,3 @@ def test_compare_versions():
 
 if __name__ == '__main__':
     test_compare_versions()
-
