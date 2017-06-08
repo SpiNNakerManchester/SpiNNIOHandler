@@ -1,11 +1,12 @@
 import os
-from spinn_storage_handlers.abstract_classes.abstract_buffered_data_storage \
-    import AbstractBufferedDataStorage
+from spinn_storage_handlers.abstract_classes \
+    import AbstractContextManager, AbstractBufferedDataStorage
 from spinn_storage_handlers.exceptions import \
     BufferedBytearrayOperationNotImplemented
 
 
-class BufferedBytearrayDataStorage(AbstractBufferedDataStorage):
+class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
+                                   AbstractContextManager):
     """Data storage based on a bytearray buffer with two pointers,
     one for reading and one for writing.
     """
