@@ -7,4 +7,5 @@ from .abstract_data_writer import AbstractDataWriter
 
 __all__ = [
     "AbstractBufferedDataStorage", "AbstractByteReader", "AbstractByteWriter",
-    "AbstractContextManager", "AbstractDataReader", "AbstractDataWriter" ]
+    "AbstractContextManager", "AbstractDataReader", "AbstractDataWriter"
+]
