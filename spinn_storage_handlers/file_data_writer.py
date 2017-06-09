@@ -1,10 +1,10 @@
 from spinn_storage_handlers.buffered_file_data_storage import \
     BufferedFileDataStorage
-from spinn_storage_handlers.abstract_classes.abstract_data_writer import \
-    AbstractDataWriter
+from spinn_storage_handlers.abstract_classes import \
+    AbstractDataWriter, AbstractContextManager
 
 
-class FileDataWriter(AbstractDataWriter):
+class FileDataWriter(AbstractDataWriter, AbstractContextManager):
 
     __slots__ = [
         # the file container

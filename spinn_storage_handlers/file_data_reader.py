@@ -1,10 +1,10 @@
 from spinn_storage_handlers.buffered_file_data_storage import \
     BufferedFileDataStorage
-from spinn_storage_handlers.abstract_classes.abstract_data_reader import \
-    AbstractDataReader
+from spinn_storage_handlers.abstract_classes import \
+    AbstractDataReader, AbstractContextManager
 
 
-class FileDataReader(AbstractDataReader):
+class FileDataReader(AbstractDataReader, AbstractContextManager):
     """ A reader that can read data from a file
     """
 

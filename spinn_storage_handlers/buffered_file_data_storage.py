@@ -1,13 +1,14 @@
 import os
 from io import BlockingIOError
 
-from spinn_storage_handlers.abstract_classes.abstract_buffered_data_storage \
-    import AbstractBufferedDataStorage
+from spinn_storage_handlers.abstract_classes \
+    import AbstractBufferedDataStorage, AbstractContextManager
 from spinn_storage_handlers.exceptions import DataReadException, \
     DataWriteException
 
 
-class BufferedFileDataStorage(AbstractBufferedDataStorage):
+class BufferedFileDataStorage(AbstractBufferedDataStorage,
+                              AbstractContextManager):
     """Data storage based on a temporary file with two pointers, one for
     reading and one for writing.
     """
