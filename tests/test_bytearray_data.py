@@ -1,5 +1,4 @@
-from spinn_storage_handlers.buffered_bytearray_data_storage \
-    import BufferedBytearrayDataStorage
+from spinn_storage_handlers import BufferedBytearrayDataStorage
 
 
 testdata = bytearray("ABcd1234")

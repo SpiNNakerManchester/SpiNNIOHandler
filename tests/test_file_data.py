@@ -1,8 +1,6 @@
 import pytest
-from spinn_storage_handlers.file_data_reader import FileDataReader
-from spinn_storage_handlers.file_data_writer import FileDataWriter
-from spinn_storage_handlers.buffered_file_data_storage \
-    import BufferedFileDataStorage
+from spinn_storage_handlers \
+    import FileDataReader, FileDataWriter, BufferedFileDataStorage
 
 
 testdata = bytearray("ABcd1234")
@@ -11,17 +9,17 @@ testdata = bytearray("ABcd1234")
 @pytest.yield_fixture
 def temp_dir(tmpdir):
     # Directory for data
-    dir = tmpdir.mkdir("test_file_data")
-    assert dir.check(exists=1)
+    thedir = tmpdir.mkdir("test_file_data")
+    assert thedir.check(exists=1)
 
-    yield dir
+    yield thedir
 
     # Cleanup
     try:
-        dir.remove(ignore_errors=True)
+        thedir.remove(ignore_errors=True)
     except:
         pass
-    assert dir.check(exists=0)
+    assert thedir.check(exists=0)
 
 
 def test_read_file(temp_dir):

@@ -75,8 +75,8 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         return data
 
     def readinto(self, data):
-        """ See :py:meth:`spinn_storage_handlers.abstract_classes.\
-        abstract_buffered_data_storage.AbstractBufferedDataStorage.readinto`
+        """ See \
+            :py:meth:`spinn_storage_handlers.abstract_classes.AbstractBufferedDataStorage.readinto`
         """
         self._file.seek(self._read_pointer)
 

@@ -1,6 +1,5 @@
 # import py.test
-from spinn_storage_handlers.buffered_tempfile_data_storage \
-    import BufferedTempfileDataStorage
+from spinn_storage_handlers import BufferedTempfileDataStorage
 
 
 testdata = bytearray("ABcd1234")

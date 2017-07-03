@@ -1,5 +1,4 @@
-from spinn_storage_handlers.buffered_file_data_storage import \
-    BufferedFileDataStorage
+from .buffered_file_data_storage import BufferedFileDataStorage
 from spinn_storage_handlers.abstract_classes import \
     AbstractDataWriter, AbstractContextManager
 
