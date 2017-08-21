@@ -42,7 +42,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._file.seek(self._read_pointer)
         data = self._file.read(data_size)
         self._read_pointer += data_size
-        return data
+        return bytearray(data)
 
     def readinto(self, data):
         self._file.seek(self._read_pointer)
@@ -54,7 +54,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._file.seek(0)
         data = self._file.read()
         self._read_pointer = self._file.tell()
-        return data
+        return bytearray(data)
 
     def seek_read(self, offset, whence=os.SEEK_SET):
         if whence == os.SEEK_SET:
