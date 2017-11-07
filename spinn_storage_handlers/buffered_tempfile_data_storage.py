@@ -106,7 +106,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
 
     def write(self, data):
         if not isinstance(data, bytearray):
-            raise
+            raise IOError("can only write bytearrays")
         f = self._handle
         f.seek(self._write_pointer)
         f.write(data)
