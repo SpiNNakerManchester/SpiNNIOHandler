@@ -203,4 +203,4 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
             f.close()
 
 
-atexit.register(BufferedTempfileDataStorage._close_them_all)
+atexit.register(BufferedTempfileDataStorage.close_all)
