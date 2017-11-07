@@ -97,38 +97,42 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._write_pointer = 0
         BufferedTempfileDataStorage._ALL.append(self)
 
+    @property
+    def _handle(self):
+        """A handle to the file that we can actually read or write through.
+        """
+        if self._file not in _LRU:
+            self._file = _SimpleFileWrapper(self._name)
+        return self._file
+
     def write(self, data):
         if not isinstance(data, bytearray):
             raise
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        self._file.seek(self._write_pointer)
-        self._file.write(data)
+        f = self._handle
+        f.seek(self._write_pointer)
+        f.write(data)
         self._file_size += len(data)
         self._write_pointer += len(data)
 
     def read(self, data_size):
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        self._file.seek(self._read_pointer)
-        data = self._file.read(data_size)
+        f = self._handle
+        f.seek(self._read_pointer)
+        data = f.read(data_size)
         self._read_pointer += data_size
         return bytearray(data)
 
     def readinto(self, data):
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        self._file.seek(self._read_pointer)
-        data_size = self._file.readinto(data)
+        f = self._handle
+        f.seek(self._read_pointer)
+        data_size = f.readinto(data)
         self._read_pointer += data_size
         return data_size
 
     def read_all(self):
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        self._file.seek(0)
-        data = self._file.read()
-        self._read_pointer = self._file.tell()
+        f = self._handle
+        f.seek(0)
+        data = f.read()
+        self._read_pointer = f.tell()
         return bytearray(data)
 
     def seek_read(self, offset, whence=os.SEEK_SET):
@@ -184,12 +188,11 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         :return: The size of the file
         :rtype: int
         """
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        current_pos = self._file.tell()
-        self._file.seek(0, 2)
-        end_pos = self._file.tell()
-        self._file.seek(current_pos)
+        f = self._handle
+        current_pos = f.tell()
+        f.seek(0, 2)
+        end_pos = f.tell()
+        f.seek(current_pos)
         return end_pos
 
     @staticmethod
