@@ -12,7 +12,7 @@ _LRU_MAX = 100
 class _SimpleFileWrapper(object):
     def __init__(self, filename):
         global _LRU
-        self._file = open(filename, "w+b")
+        self._file = open(filename, "r+b")
         _LRU.append(self)
         if len(_LRU) > _LRU_MAX:
             trim, _LRU = _LRU[:len(_LRU)-_LRU_MAX], _LRU[-_LRU_MAX:]
@@ -45,13 +45,13 @@ class _SimpleFileWrapper(object):
         _LRU.append(self)
         return self._file.readinto(buffer)
 
-    def write(self, str):  # @ReservedAssignment
+    def write(self, buffer):  # @ReservedAssignment
         try:
             _LRU.remove(self)
         except ValueError:
             pass
         _LRU.append(self)
-        self._file.write(str)
+        self._file.write(buffer)
 
     def seek(self, a, b=None):
         if b is None:

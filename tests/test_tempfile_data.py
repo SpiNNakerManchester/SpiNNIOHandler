@@ -1,5 +1,6 @@
 # import py.test
 from spinn_storage_handlers import BufferedTempfileDataStorage
+import os
 
 
 testdata = bytearray("ABcd1234")
@@ -20,11 +21,20 @@ def test_lots_of_tempfiles():
     temps = list()
     for i in xrange(MANY_TEMP_FILES):
         b = BufferedTempfileDataStorage()
-        b.write(str(i))
+        assert b not in temps
         temps.append(b)
+        s = str(i)
+        assert len(s) > 0
+        b.write(bytearray(s))
+        assert b._write_pointer > 0
+    assert len(temps) == MANY_TEMP_FILES
     vals = list()
     for t in temps:
-        vals.append(int(t.read()))
+        vals.append(int(t.read_all()))
+        assert t._read_pointer != 0
     assert vals == sorted(list(vals))
     for t in temps:
+        flnm = t._name
+        assert os.path.isfile(flnm)
         t.close()
+        assert not os.path.isfile(flnm)
