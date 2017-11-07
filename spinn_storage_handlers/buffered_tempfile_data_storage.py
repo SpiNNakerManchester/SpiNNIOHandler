@@ -90,7 +90,6 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f = tempfile.NamedTemporaryFile(delete=False)
         self._name = f.name
         f.close()
-        
         self._file = _SimpleFileWrapper(self._name)
         self._file_size = 0
         self._read_pointer = 0

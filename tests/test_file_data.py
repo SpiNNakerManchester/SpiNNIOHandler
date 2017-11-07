@@ -17,7 +17,7 @@ def temp_dir(tmpdir):
     # Cleanup
     try:
         thedir.remove(ignore_errors=True)
-    except:
+    except Exception:
         pass
     assert thedir.check(exists=0)
 
