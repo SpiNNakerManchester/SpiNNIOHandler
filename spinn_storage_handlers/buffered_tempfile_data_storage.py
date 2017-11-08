@@ -6,8 +6,8 @@ from spinn_storage_handlers.abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
 
 
+# Maximum number of entries in the underlying LRU cache
 _LRU_MAX = 100
-_LRU = None
 
 
 class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
@@ -17,20 +17,26 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
     """
 
     __slots__ = [
-        # ??????????????
+        # The current (believed) size of the file
         "_file_size",
 
-        # ??????????????
+        # Where in the file any reads will occur
         "_read_pointer",
 
-        # ??????????????
+        # Where in the file any writes will occur
         "_write_pointer",
 
-        # ?????????
+        # The name of the temporary file
         "_name"
     ]
 
-    _ALL = list()
+    # Collection of all current BufferedTempfileDataStorages so that the exit
+    # handler can clean up correctly.
+    _ALL = set()
+
+    # Least-recently-used cache that manages when to auto-close the system
+    # file handles.
+    _LRU = None
 
     def __init__(self):
         f = tempfile.NamedTemporaryFile(delete=False)
@@ -40,11 +46,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._file_size = 0
         self._read_pointer = 0
         self._write_pointer = 0
-        self._ALL.append(self)
-
-    @staticmethod
-    def _clean_file(name, file):  # @ReservedAssignment @UnusedVariable
-        file.close()
+        self._ALL.add(self)
 
     @property
     def _handle(self):
@@ -52,10 +54,10 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
 
         :rtype: file
         """
-        if self._name in _LRU:
-            return _LRU[self._name]
+        if self._name in self._LRU:
+            return self._LRU[self._name]
         new = open(self._name, "r+b")
-        _LRU[self._name] = new
+        self._LRU[self._name] = new
         return new
 
     def write(self, data):
@@ -129,8 +131,8 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         return (file_len - self._read_pointer) <= 0
 
     def close(self):
-        if self._name in _LRU:
-            del _LRU[self._name]
+        if self._name in self._LRU:
+            del self._LRU[self._name]
         self._ALL.remove(self)
         os.unlink(self._name)
 
@@ -148,13 +150,22 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f.seek(current_pos)
         return end_pos
 
+    @classmethod
+    def initialise(cls, lru_max):
+        cls._LRU = pylru.lrucache(lru_max, cls._clean_file)
+        atexit.register(cls._close_all)
+
     @staticmethod
-    def close_all():
+    def _clean_file(name, file):  # @ReservedAssignment @UnusedVariable
+        file.close()
+
+    @classmethod
+    def _close_all(cls):
         # Copy!
-        alltoclose = list(BufferedTempfileDataStorage._ALL)
+        alltoclose = list(cls._ALL)
         for f in alltoclose:
             f.close()
 
 
-_LRU = pylru.lrucache(_LRU_MAX, BufferedTempfileDataStorage._clean_file)
-atexit.register(BufferedTempfileDataStorage.close_all)
+# Set up the class's system entanglements
+BufferedTempfileDataStorage.initialise(_LRU_MAX)
