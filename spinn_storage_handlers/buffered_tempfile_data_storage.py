@@ -1,66 +1,13 @@
 import atexit
 import os
+import pylru
 import tempfile
 from spinn_storage_handlers.abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
 
 
-_LRU = list()
 _LRU_MAX = 100
-
-
-class _SimpleFileWrapper(object):
-    def __init__(self, filename):
-        global _LRU
-        self._file = open(filename, "r+b")
-        _LRU.append(self)
-        if len(_LRU) > _LRU_MAX:
-            trim, _LRU = _LRU[:len(_LRU)-_LRU_MAX], _LRU[-_LRU_MAX:]
-            for f in trim:
-                f.close()
-
-    def close(self):
-        self._file.close()
-        try:
-            _LRU.remove(self)
-        except ValueError:
-            pass
-
-    def read(self, size=None):
-        try:
-            _LRU.remove(self)
-        except ValueError:
-            pass
-        _LRU.append(self)
-        if size is None:
-            return self._file.read()
-        else:
-            return self._file.read(size)
-
-    def readinto(self, buffer):  # @ReservedAssignment
-        try:
-            _LRU.remove(self)
-        except ValueError:
-            pass
-        _LRU.append(self)
-        return self._file.readinto(buffer)
-
-    def write(self, buffer):  # @ReservedAssignment
-        try:
-            _LRU.remove(self)
-        except ValueError:
-            pass
-        _LRU.append(self)
-        self._file.write(buffer)
-
-    def seek(self, a, b=None):
-        if b is None:
-            self._file.seek(a)
-        else:
-            self._file.seek(a, b)
-
-    def tell(self):
-        return self._file.tell()
+_LRU = None
 
 
 class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
@@ -80,7 +27,6 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         "_write_pointer",
 
         # ?????????
-        "_file",
         "_name"
     ]
 
@@ -90,19 +36,27 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f = tempfile.NamedTemporaryFile(delete=False)
         self._name = f.name
         f.close()
-        self._file = _SimpleFileWrapper(self._name)
+        self._handle.seek(0)
         self._file_size = 0
         self._read_pointer = 0
         self._write_pointer = 0
-        BufferedTempfileDataStorage._ALL.append(self)
+        self._ALL.append(self)
+
+    @staticmethod
+    def _clean_file(name, file):  # @ReservedAssignment @UnusedVariable
+        file.close()
 
     @property
     def _handle(self):
         """A handle to the file that we can actually read or write through.
+
+        :rtype: file
         """
-        if self._file not in _LRU:
-            self._file = _SimpleFileWrapper(self._name)
-        return self._file
+        if self._name in _LRU:
+            return _LRU[self._name]
+        new = open(self._name, "r+b")
+        _LRU[self._name] = new
+        return new
 
     def write(self, data):
         if not isinstance(data, bytearray):
@@ -175,9 +129,9 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         return (file_len - self._read_pointer) <= 0
 
     def close(self):
-        if self._file in _LRU:
-            self._file.close()
-        BufferedTempfileDataStorage._ALL.remove(self)
+        if self._name in _LRU:
+            del _LRU[self._name]
+        self._ALL.remove(self)
         os.unlink(self._name)
 
     @property
@@ -202,4 +156,5 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
             f.close()
 
 
+_LRU = pylru.lrucache(_LRU_MAX, BufferedTempfileDataStorage._clean_file)
 atexit.register(BufferedTempfileDataStorage.close_all)
