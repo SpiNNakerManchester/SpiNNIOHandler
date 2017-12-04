@@ -2,7 +2,7 @@ import os
 from spinn_storage_handlers.abstract_classes \
     import AbstractContextManager, AbstractBufferedDataStorage
 from spinn_storage_handlers.exceptions import \
-    BufferedBytearrayOperationNotImplemented
+    BufferedBytearrayOperationNotImplemented, DataWriteException
 
 
 class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
@@ -29,7 +29,7 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
 
     def write(self, data):
         if not isinstance(data, bytearray):
-            raise
+            raise DataWriteException("can only write bytearrays")
         if len(self._data_storage) == self._write_pointer:
             self._data_storage.extend(data)
         else:

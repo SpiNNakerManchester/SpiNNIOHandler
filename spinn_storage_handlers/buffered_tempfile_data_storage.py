@@ -156,8 +156,8 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         atexit.register(cls._close_all)
 
     @staticmethod
-    def _clean_file(name, file):  # @ReservedAssignment @UnusedVariable
-        file.close()
+    def _clean_file(_, f):
+        f.close()
 
     @classmethod
     def _close_all(cls):
