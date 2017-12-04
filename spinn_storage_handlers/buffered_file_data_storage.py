@@ -44,7 +44,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
                 "unable to open file {0}; {1}".format(filename, e))
 
     def write(self, data):
-        if not (isinstance(data, bytearray) or isinstance(data, str)):
+        if not isinstance(data, (bytearray, str)):
             raise DataWriteException(
                 "data to write is not in a suitable format (bytearray or "
                 "string). Current data format: {0:s}".format(type(data)))
