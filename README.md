@@ -1,4 +1,5 @@
-[![Build Status](https://api.travis-ci.org/SpiNNakerManchester/SpiNNUtils.svg?branch=master)](https://travis-ci.org/SpiNNakerManchester/SpiNNStorageHandlers)
+[![Build Status](https://api.travis-ci.org/SpiNNakerManchester/SpiNNStorageHandlers.svg?branch=master)](https://travis-ci.org/SpiNNakerManchester/SpiNNStorageHandlers)
+[![Coverage Status](https://coveralls.io/repos/github/SpiNNakerManchester/SpiNNStorageHandlers/badge.svg?branch=master)](https://coveralls.io/github/SpiNNakerManchester/SpiNNStorageHandlers?branch=master)
 
 
 This package provides classes to handle data storage, both in memory (through
