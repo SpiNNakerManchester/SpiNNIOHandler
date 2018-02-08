@@ -14,7 +14,7 @@ before_script:
   - pip install python-coveralls
 
 script:
-  - py.test .
+  - py.test . --cov spinn_storage_handlers
   # Code quality check
   - flake8 spinn_storage_handlers tests
   - cd doc/source
@@ -25,4 +25,3 @@ script:
 after_success:
   - cd $TRAVIS_BUILD_DIR
   - coveralls
-  
