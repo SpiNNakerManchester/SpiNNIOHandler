@@ -53,7 +53,7 @@ def test_basic_ops():
         for b in [BufferedTempfileDataStorage()
                   for _ in xrange(MANY_TEMP_FILES)]:
             b.close()
-        
+
         assert f.read(3) == 'bcb'
         assert f.eof() is False
         f.write(bytearray("f"))
