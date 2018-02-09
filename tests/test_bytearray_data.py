@@ -1,19 +1,19 @@
 from spinn_storage_handlers import BufferedBytearrayDataStorage
-from spinn_storage_handlers.exceptions import DataWriteException
+from spinn_storage_handlers.exceptions \
+    import DataWriteException, BufferedBytearrayOperationNotImplemented
 import pytest
+import os
 
 testdata = bytearray("ABcd1234")
 
 
 def test_readwrite_bytearray_buffer():
     bbds = BufferedBytearrayDataStorage()
-
     assert bbds is not None
-
     bbds.write(testdata)
-
     assert bbds.read_all() == testdata
-
+    with pytest.raises(BufferedBytearrayOperationNotImplemented):
+        bbds.readinto(bytearray(123))
     bbds.close()
 
 
@@ -54,3 +54,11 @@ def test_basic_ops():
         buf.seek_read(0)
         assert buf.read(4) == 'abPQ'
         assert buf.eof() is False
+
+        buf.write(bytearray("gh"))
+        buf.seek_read(1, os.SEEK_SET)
+        assert buf.read(1) == 'b'
+        buf.seek_read(1, os.SEEK_CUR)
+        assert buf.read(1) == 'Q'
+        buf.seek_read(-1, os.SEEK_END)
+        assert buf.read(1) == 'g'

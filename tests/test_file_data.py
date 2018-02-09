@@ -1,9 +1,9 @@
+import os
 import pytest
 from spinn_storage_handlers.exceptions import DataReadException,\
     DataWriteException
 from spinn_storage_handlers \
     import FileDataReader, FileDataWriter, BufferedFileDataStorage
-
 
 testdata = bytearray("ABcd1234")
 
@@ -111,3 +111,15 @@ def test_writeonly(temp_dir):
         assert f.tell() == 0
         f.write("abcde")
         assert f.tell() == 5
+
+
+def test_seeking(temp_dir):
+    p = temp_dir.join("test_seeking.txt")
+    with BufferedFileDataStorage(str(p), "w+") as f:
+        f.write("abPQRcd")
+        f.seek_read(1, os.SEEK_SET)
+        assert f.read(1) == 'b'
+        f.seek_read(1, os.SEEK_CUR)
+        assert f.read(1) == 'Q'
+        f.seek_read(-1, os.SEEK_END)
+        assert f.read(1) == 'c'

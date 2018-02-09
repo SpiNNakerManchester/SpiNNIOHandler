@@ -73,7 +73,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
         try:
             data = self._file.read(data_size)
-        except BlockingIOError as e:
+        except BlockingIOError as e:   # pragma: no cover
             raise DataReadException(
                 "unable to read {0:d} bytes from file {1:s}; {2}"
                 .format(data_size, self._filename, e))
@@ -90,7 +90,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
         try:
             length = self._file.readinto(data)
-        except BlockingIOError as e:
+        except BlockingIOError as e:   # pragma: no cover
             raise IOError(
                 "unable to read {0:d} bytes from file {1:s}; {2}"
                 .format(len(data), self._filename, e))
@@ -135,7 +135,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
     def close(self):
         try:
             self._file.close()
-        except Exception as e:
+        except Exception as e:   # pragma: no cover
             raise DataReadException(
                 "file {0} cannot be closed; {1}".format(self._filename, e))
 
