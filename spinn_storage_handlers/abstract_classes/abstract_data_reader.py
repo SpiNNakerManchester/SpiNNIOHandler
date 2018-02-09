@@ -5,14 +5,14 @@ from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 
 @add_metaclass(AbstractBase)
 class AbstractDataReader(object):
-    """ Abstract reader used to read data from somewhere
+    """ Abstract reader used to read data from somewhere.
     """
 
     __slots__ = []
 
     @classmethod
     def __subclasshook__(cls, othercls):
-        """ Checks if all the abstract methods are present on the subclass
+        """ Checks if all the abstract methods are present on the subclass.
         """
         for C in cls.__mro__:
             for key in C.__dict__:
@@ -35,12 +35,11 @@ class AbstractDataReader(object):
         :rtype: bytearray
         :raise IOError: If an error occurs reading from the underlying storage
         """
-        pass
 
     @abstractmethod
     def readinto(self, data):
         """ Read some bytes of data from the underlying storage into a\
-            pre-defined array.  Will block until some bytes are available,\
+            predefined array.  Will block until some bytes are available,\
             but may not fill the array completely.
 
         :param data: The place where the data is to be stored
@@ -49,23 +48,20 @@ class AbstractDataReader(object):
         :rtype: int
         :raise IOError: If an error occurs reading from the underlying storage
         """
-        pass
 
     @abstractmethod
     def readall(self):
-        """ Read the rest of the bytes from the underlying stream
+        """ Read the rest of the bytes from the underlying stream.
 
         :return: The bytes read
         :rtype: bytearray
         :raise IOError: If there is an error obtaining the bytes
         """
-        pass
 
     @abstractmethod
     def tell(self):
-        """ Returns the position of the file cursor
+        """ Returns the position of the file cursor.
 
         :return: Position of the file cursor
         :rtype: int
         """
-        pass

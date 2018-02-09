@@ -5,13 +5,15 @@ from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 
 @add_metaclass(AbstractBase)
 class AbstractContextManager(object):
-    """Closeable class that supports being used as a simple context manager."""
+    """ Closeable class that supports being used as a simple context manager.
+    """
 
     __slots__ = []
 
     @abstractmethod
     def close(self):
-        pass
+        """ How to actually close the underlying resources.
+        """
 
     def __enter__(self):
         return self
