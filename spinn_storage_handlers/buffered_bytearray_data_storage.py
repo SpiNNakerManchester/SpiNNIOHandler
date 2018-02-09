@@ -30,16 +30,9 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
     def write(self, data):
         if not isinstance(data, bytearray):
             raise DataWriteException("can only write bytearrays")
-        if len(self._data_storage) == self._write_pointer:
-            self._data_storage.extend(data)
-            self._write_pointer = len(self._data_storage)
-        else:
-            temp1 = self._data_storage[0:self._write_pointer]
-            temp2 = self._data_storage[self._write_pointer:]
-            temp1.extend(data)
-            self._write_pointer = len(temp1)
-            temp1.extend(temp2)
-            self._data_storage = temp1
+        self._data_storage[
+            self._write_pointer:self._write_pointer + len(data)] = data
+        self._write_pointer += len(data)
 
     def read(self, data_size):
         end_ptr = self._read_pointer + data_size
