@@ -27,7 +27,10 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         "_write_pointer",
 
         # The name of the temporary file
-        "_name"
+        "_name",
+
+        # Whether we need to do a flush before proceeding with reads
+        "_flush_pending"
     ]
 
     # Collection of all current BufferedTempfileDataStorages so that the exit
@@ -45,6 +48,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._handle.seek(0)
         self._read_pointer = 0
         self._write_pointer = 0
+        self._flush_pending = False
         self._ALL.add(self)
 
     @property
@@ -65,10 +69,19 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f = self._handle
         f.seek(self._write_pointer)
         f.write(data)
+        self._flush_pending = True
         self._write_pointer += len(data)
+
+    def _flush(self, f=None):
+        if f is None:
+            f = self._handle
+        if self._flush_pending:
+            f.flush()
+        self._flush_pending = False
 
     def read(self, data_size):
         f = self._handle
+        self._flush(f)
         f.seek(self._read_pointer)
         data = f.read(data_size)
         self._read_pointer += len(data)
@@ -76,6 +89,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
 
     def readinto(self, data):
         f = self._handle
+        self._flush(f)
         f.seek(self._read_pointer)
         data_size = f.readinto(data)
         self._read_pointer += data_size
@@ -83,6 +97,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
 
     def read_all(self):
         f = self._handle
+        self._flush(f)
         f.seek(0)
         data = f.read()
         self._read_pointer = f.tell()
@@ -100,9 +115,11 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         return max(min(pointer, self._file_len), 0)
 
     def seek_read(self, offset, whence=os.SEEK_SET):
+        self._flush()
         self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
     def seek_write(self, offset, whence=os.SEEK_SET):
+        self._flush()
         self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
     def tell_read(self):
@@ -116,6 +133,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         return (file_len - self._read_pointer) <= 0
 
     def close(self):
+        # Don't need to flush; any pending writes are auto-flushed
         if self._name in self._LRU:
             del self._LRU[self._name]
         self._ALL.remove(self)
@@ -128,7 +146,9 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         :return: The size of the file
         :rtype: int
         """
-        return file_length(self._handle)
+        f = self._handle
+        self._flush(f)
+        return file_length(f)
 
     @classmethod
     def initialise(cls, lru_max):
