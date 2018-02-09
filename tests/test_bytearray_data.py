@@ -55,6 +55,7 @@ def test_basic_ops():
         assert buf.read(4) == 'abPQ'
         assert buf.eof() is False
 
+        buf.seek_write(6)
         buf.write(bytearray("gh"))
         buf.seek_read(1, os.SEEK_SET)
         assert buf.read(1) == 'b'

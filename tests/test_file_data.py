@@ -121,5 +121,5 @@ def test_seeking(temp_dir):
         assert f.read(1) == 'b'
         f.seek_read(1, os.SEEK_CUR)
         assert f.read(1) == 'Q'
-        f.seek_read(-1, os.SEEK_END)
+        f.seek_read(-2, os.SEEK_END)
         assert f.read(1) == 'c'
