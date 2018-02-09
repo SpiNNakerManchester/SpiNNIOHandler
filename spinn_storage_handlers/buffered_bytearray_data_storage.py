@@ -7,8 +7,8 @@ from spinn_storage_handlers.exceptions import \
 
 class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
                                    AbstractContextManager):
-    """Data storage based on a bytearray buffer with two pointers,
-    one for reading and one for writing.
+    """ Data storage based on a bytearray buffer with two pointers,\
+        one for reading and one for writing.
     """
 
     __slots__ = [

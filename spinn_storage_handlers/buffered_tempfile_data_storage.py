@@ -12,8 +12,10 @@ _LRU_MAX = 100
 
 class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
                                   AbstractContextManager):
-    """Data storage based on a temporary file with two pointers, one for
-    reading and one for writing.
+    """ Data storage based on a temporary file with two pointers, one for\
+        reading and one for writing. Under the covers, it actually opens and\
+        closes the temporary file as it chooses in order to limit the number\
+        of file descriptors in use.
     """
 
     __slots__ = [

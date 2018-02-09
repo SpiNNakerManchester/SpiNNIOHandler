@@ -9,8 +9,8 @@ from spinn_storage_handlers.exceptions import DataReadException, \
 
 class BufferedFileDataStorage(AbstractBufferedDataStorage,
                               AbstractContextManager):
-    """Data storage based on a temporary file with two pointers, one for
-    reading and one for writing.
+    """ Data storage based on a temporary file with two pointers, one for\
+        reading and one for writing.
     """
 
     __slots__ = [
@@ -140,7 +140,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         try:
             self._file.close()
         except Exception as e:
-            DataReadException(
+            raise DataReadException(
                 "file {0} cannot be closed; {1}".format(self._filename, e))
 
     @property
