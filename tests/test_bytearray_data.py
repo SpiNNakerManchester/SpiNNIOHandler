@@ -61,5 +61,5 @@ def test_basic_ops():
         assert buf.read(1) == 'b'
         buf.seek_read(1, os.SEEK_CUR)
         assert buf.read(1) == 'Q'
-        buf.seek_read(-1, os.SEEK_END)
+        buf.seek_read(-2, os.SEEK_END)
         assert buf.read(1) == 'g'
