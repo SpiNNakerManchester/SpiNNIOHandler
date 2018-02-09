@@ -56,9 +56,27 @@ def test_basic_ops():
 
         assert f.read(3) == 'bcb'
         assert f.eof() is False
+        assert f.tell_read() == 4
+        assert f.tell_write() == 5
         f.write(bytearray("f"))
         f.seek_read(0)
         b = bytearray(6)
         assert f.readinto(b) == 6
         assert b == 'abcbaf'
         assert f.eof() is True
+
+
+def test_seeking():
+    with BufferedTempfileDataStorage() as f:
+        f.write(bytearray("abPQRcd"))
+        f.seek_read(1, os.SEEK_SET)
+        assert f.read(1) == 'b'
+        f.seek_read(1, os.SEEK_CUR)
+        assert f.read(1) == 'Q'
+        f.seek_read(-2, os.SEEK_END)
+        assert f.read(1) == 'c'
+        assert f.eof() is False
+        f.read(1)
+        assert f.eof() is True
+        with pytest.raises(IOError):
+            f.seek_read(0, "no such flag")

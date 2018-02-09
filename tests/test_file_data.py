@@ -123,3 +123,8 @@ def test_seeking(temp_dir):
         assert f.read(1) == 'Q'
         f.seek_read(-2, os.SEEK_END)
         assert f.read(1) == 'c'
+        assert f.eof() is False
+        f.read(1)
+        assert f.eof() is True
+        with pytest.raises(IOError):
+            f.seek_read(0, "no such flag")

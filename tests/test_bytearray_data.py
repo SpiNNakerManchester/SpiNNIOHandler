@@ -63,3 +63,6 @@ def test_basic_ops():
         assert buf.read(1) == 'Q'
         buf.seek_read(-2, os.SEEK_END)
         assert buf.read(1) == 'g'
+
+        with pytest.raises(IOError):
+            buf.seek_read(0, "no such flag")
