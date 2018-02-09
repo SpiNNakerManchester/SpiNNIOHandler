@@ -10,18 +10,6 @@ class AbstractDataWriter(object):
 
     __slots__ = []
 
-    @classmethod
-    def __subclasshook__(cls, othercls):
-        """ Checks if all the abstract methods are present on the subclass.
-        """
-        for C in cls.__mro__:
-            for key in C.__dict__:
-                item = C.__dict__[key]
-                if hasattr(item, "__isabstractmethod__"):
-                    if not any(key in B.__dict__ for B in othercls.__mro__):
-                        return NotImplemented
-        return True
-
     @abstractmethod
     def write(self, data):
         """ Write some bytes of data to the underlying storage.\
