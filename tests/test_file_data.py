@@ -80,7 +80,7 @@ def test_no_such_file(temp_dir):
 
 def test_readonly(temp_dir):
     p = temp_dir.join("test_readonly.txt")
-    open(str(p)).close()
+    open(str(p), "w").close()
     with BufferedFileDataStorage(str(p), "r") as f:
         with pytest.raises(DataReadException):
             f.write("foo")
@@ -94,7 +94,7 @@ def test_writeonly(temp_dir):
     p = temp_dir.join("test_writeonly.txt")
     with BufferedFileDataStorage(str(p), "w") as f:
         f.write("foo")
-        with pytest.raises(DataWriteException):
+        with pytest.raises(IOError):
             f.read(100)
         f.seek_write(0)
         with pytest.raises(DataWriteException):
