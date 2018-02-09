@@ -1,7 +1,7 @@
 # import py.test
 from spinn_storage_handlers import BufferedTempfileDataStorage
 import os
-
+import pytest
 
 testdata = bytearray("ABcd1234")
 MANY_TEMP_FILES = 2000
@@ -42,9 +42,11 @@ def test_lots_of_tempfiles():
 
 def test_basic_ops():
     with BufferedTempfileDataStorage() as f:
-        f.write("abcde")
+        with pytest.raises(IOError):
+            f.write("abcde")
+        f.write(bytearray("abcde"))
         f.seek_write(3)
-        f.write("ba")
+        f.write(bytearray("ba"))
         f.seek_read(1)
 
         # Flush the OS file pointer
@@ -54,7 +56,7 @@ def test_basic_ops():
         
         assert f.read(3) == 'bcb'
         assert f.eof() is False
-        f.write("f")
+        f.write(bytearray("f"))
         f.seek_read(0)
         b = bytearray(6)
         assert f.readinto(b) == 6
