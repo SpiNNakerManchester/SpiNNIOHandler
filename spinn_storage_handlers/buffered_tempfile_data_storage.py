@@ -160,7 +160,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f.close()
 
     @classmethod
-    def _close_all(cls):   # pragma: no cover
+    def _close_all(cls):
         # Copy!
         alltoclose = list(cls._ALL)
         for f in alltoclose:

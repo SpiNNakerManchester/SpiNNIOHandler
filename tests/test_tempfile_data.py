@@ -80,3 +80,14 @@ def test_seeking():
         assert f.eof() is True
         with pytest.raises(IOError):
             f.seek_read(0, "no such flag")
+
+
+def test_close_at_end():
+    temps = [BufferedTempfileDataStorage() for _ in range(5)]
+    files = [t._name for t in temps]
+    for f in files:
+        assert os.path.isfile(f) is True
+    # Actually, this is installed as an exit handler...
+    BufferedTempfileDataStorage._close_all()
+    for f in files:
+        assert os.path.isfile(f) is False
