@@ -92,9 +92,10 @@ def test_readonly(temp_dir):
         assert f.readinto(b) == 0
     with FileDataReader(str(p)) as f:
         assert f.read(100) == ""
-        f.seek_read(0)
+        assert f.tell() == 0
         assert f.readinto(bytearray(100)) == 0
         assert f.tell() == 0
+        assert f.readall() == ""
 
 
 def test_writeonly(temp_dir):
