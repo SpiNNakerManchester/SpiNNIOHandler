@@ -12,7 +12,7 @@ def file_length(f):
     try:
         # fstat() is fastest, but cannot guarantee it will work
         return os.fstat(f.fileno()).st_size
-    except Exception:
+    except Exception:   # pragma: no cover
         current_pos = f.tell()
         f.seek(0, os.SEEK_SET)
         end_pos = f.tell()
