@@ -82,7 +82,7 @@ def test_readonly(temp_dir):
     p = temp_dir.join("test_readonly.txt")
     open(str(p), "w").close()
     with BufferedFileDataStorage(str(p), "r") as f:
-        with pytest.raises(DataReadException):
+        with pytest.raises(DataWriteException):
             f.write("foo")
         f.read(100)
         f.seek_read(0)
@@ -97,8 +97,8 @@ def test_writeonly(temp_dir):
         with pytest.raises(IOError):
             f.read(100)
         f.seek_write(0)
-        with pytest.raises(DataWriteException):
+        with pytest.raises(DataReadException):
             b = bytearray(100)
-            f.write(b)
+            f.readinto(b)
         with pytest.raises(DataWriteException):
             f.write(12345)
