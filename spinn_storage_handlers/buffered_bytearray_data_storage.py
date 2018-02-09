@@ -60,12 +60,9 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
             pointer += offset
         elif whence == os.SEEK_END:
             pointer = len(self._data_storage) - abs(offset)
-
-        if pointer < 0:
-            pointer = 0
-        elif pointer > len(self._data_storage):
-            pointer = len(self._data_storage)
-        return pointer
+        else:
+            raise IOError("unrecognised 'whence'")
+        return max(min(pointer, len(self._data_storage)), 0)
 
     def seek_read(self, offset, whence=os.SEEK_SET):
         self._read_pointer = self.__seek(self._read_pointer, offset, whence)

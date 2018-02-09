@@ -1,10 +1,10 @@
 import os
 from io import BlockingIOError
 
-from spinn_storage_handlers.abstract_classes \
+from .abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
-from spinn_storage_handlers.exceptions import DataReadException, \
-    DataWriteException
+from .exceptions import DataReadException, DataWriteException
+from .utils import file_length
 
 
 class BufferedFileDataStorage(AbstractBufferedDataStorage,
@@ -96,35 +96,22 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer = self._file.tell()
         return data
 
-    def seek_read(self, offset, whence=os.SEEK_SET):
+    def __seek(self, pointer, offset, whence):
         if whence == os.SEEK_SET:
-            self._read_pointer = offset
+            pointer = offset
         elif whence == os.SEEK_CUR:
-            self._read_pointer += offset
+            pointer += offset
         elif whence == os.SEEK_END:
-            self._read_pointer = self._file_size - abs(offset)
+            pointer = self._file_size - abs(offset)
+        else:
+            raise IOError("unrecognised 'whence'")
+        return max(min(pointer, self._file_len), 0)
 
-        if self._read_pointer < 0:
-            self._read_pointer = 0
-
-        file_len = self._file_len
-        if self._read_pointer > file_len:
-            self._read_pointer = file_len
+    def seek_read(self, offset, whence=os.SEEK_SET):
+        self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
     def seek_write(self, offset, whence=os.SEEK_SET):
-        if whence == os.SEEK_SET:
-            self._write_pointer = offset
-        elif whence == os.SEEK_CUR:
-            self._write_pointer += offset
-        elif whence == os.SEEK_END:
-            self._write_pointer = self._file_size - abs(offset)
-
-        if self._write_pointer < 0:
-            self._write_pointer = 0
-
-        file_len = self._file_len
-        if self._write_pointer > file_len:
-            self._write_pointer = file_len
+        self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
     def tell_read(self):
         return self._read_pointer
@@ -150,11 +137,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         :return: The size of the file
         :rtype: int
         """
-        current_pos = self._file.tell()
-        self._file.seek(0, 2)
-        end_pos = self._file.tell()
-        self._file.seek(current_pos)
-        return end_pos
+        return file_length(self._file)
 
     @property
     def filename(self):
