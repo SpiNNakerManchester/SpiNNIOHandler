@@ -71,7 +71,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
                 "unable to read {0:d} bytes from file {1:s}; {2}"
                 .format(data_size, self._filename, e))
 
-        self._read_pointer += data_size
+        self._read_pointer += len(data)
         return data
 
     def readinto(self, data):

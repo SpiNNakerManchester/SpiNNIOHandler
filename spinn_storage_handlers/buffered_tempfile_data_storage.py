@@ -75,7 +75,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         f = self._handle
         f.seek(self._read_pointer)
         data = f.read(data_size)
-        self._read_pointer += data_size
+        self._read_pointer += len(data)
         return bytearray(data)
 
     def readinto(self, data):
