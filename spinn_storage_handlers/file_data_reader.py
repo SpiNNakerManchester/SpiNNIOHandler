@@ -17,8 +17,8 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
 
         :param filename: The file to read
         :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
-                    file cannot found or opened for reading
+        :raise spinn_storage_handlers.exceptions.DataReadException: \
+            If the file cannot found or opened for reading
         """
         self._file_container = BufferedFileDataStorage(filename, "rb")
 

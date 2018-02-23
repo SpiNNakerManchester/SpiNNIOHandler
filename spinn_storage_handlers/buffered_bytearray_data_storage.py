@@ -7,8 +7,8 @@ from spinn_storage_handlers.exceptions import \
 
 class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
                                    AbstractContextManager):
-    """Data storage based on a bytearray buffer with two pointers,
-    one for reading and one for writing.
+    """ Data storage based on a bytearray buffer with two pointers,\
+        one for reading and one for writing.
     """
 
     __slots__ = [
@@ -30,21 +30,14 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
     def write(self, data):
         if not isinstance(data, bytearray):
             raise DataWriteException("can only write bytearrays")
-        if len(self._data_storage) == self._write_pointer:
-            self._data_storage.extend(data)
-        else:
-            temp1 = self._data_storage[0:self._write_pointer]
-            temp2 = self._data_storage[self._write_pointer:]
-            temp1.extend(data)
-            temp1.extend(temp2)
-            self._data_storage = temp1
-        self._write_pointer = len(self._data_storage)
+        self._data_storage[
+            self._write_pointer:self._write_pointer + len(data)] = data
+        self._write_pointer += len(data)
 
     def read(self, data_size):
-        start_id = self._read_pointer
-        end_id = start_id + data_size
-        self._read_pointer = end_id
-        data = self._data_storage[start_id:end_id]
+        end_ptr = self._read_pointer + data_size
+        data = self._data_storage[self._read_pointer:end_ptr]
+        self._read_pointer += len(data)
         return data
 
     def readinto(self, data):
@@ -53,33 +46,22 @@ class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,
     def read_all(self):
         return self._data_storage
 
-    def seek_read(self, offset, whence=os.SEEK_SET):
+    def __seek(self, pointer, offset, whence):
         if whence == os.SEEK_SET:
-            self._read_pointer = offset
+            pointer = offset
         elif whence == os.SEEK_CUR:
-            self._read_pointer += offset
+            pointer += offset
         elif whence == os.SEEK_END:
-            self._read_pointer = len(self._data_storage) - abs(offset)
+            pointer = len(self._data_storage) - abs(offset)
+        else:
+            raise IOError("unrecognised 'whence'")
+        return max(min(pointer, len(self._data_storage)), 0)
 
-        if self._read_pointer < 0:
-            self._read_pointer = 0
-
-        if self._read_pointer > len(self._data_storage):
-            self._read_pointer = len(self._data_storage)
+    def seek_read(self, offset, whence=os.SEEK_SET):
+        self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
     def seek_write(self, offset, whence=os.SEEK_SET):
-        if whence == os.SEEK_SET:
-            self._write_pointer = offset
-        elif whence == os.SEEK_CUR:
-            self._write_pointer += offset
-        elif whence == os.SEEK_END:
-            self._write_pointer = len(self._data_storage) - abs(offset)
-
-        if self._write_pointer < 0:
-            self._write_pointer = 0
-
-        if self._write_pointer > len(self._data_storage):
-            self._write_pointer = len(self._data_storage)
+        self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
     def tell_read(self):
         return self._read_pointer
