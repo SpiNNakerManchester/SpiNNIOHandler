@@ -16,7 +16,7 @@ before_script:
   - pip install python-coveralls
 
 script:
-  - py.test . --cov spinn_storage_handlers
+  - py.test tests --cov spinn_storage_handlers
   # Code quality check
   - flake8 spinn_storage_handlers tests
   - cd doc/source
