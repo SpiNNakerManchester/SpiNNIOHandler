@@ -5,7 +5,9 @@ from spinn_storage_handlers.exceptions import DataReadException,\
 from spinn_storage_handlers \
     import FileDataReader, FileDataWriter, BufferedFileDataStorage
 
-testdata = bytearray("ABcd1234")
+testdata = bytearray(b"ABcd1234")
+
+# pylint: disable=redefined-outer-name, broad-except, protected-access
 
 
 @pytest.yield_fixture
@@ -85,23 +87,23 @@ def test_readonly(temp_dir):
     open(str(p), "w").close()
     with BufferedFileDataStorage(str(p), "r") as f:
         with pytest.raises(DataWriteException):
-            f.write("foo")
-        assert f.read(100) == ""
+            f.write(b"foo")
+        assert f.read(100) == b""
         f.seek_read(0)
         b = bytearray(100)
         assert f.readinto(b) == 0
     with FileDataReader(str(p)) as f:
-        assert f.read(100) == ""
+        assert f.read(100) == b""
         assert f.tell() == 0
         assert f.readinto(bytearray(100)) == 0
         assert f.tell() == 0
-        assert f.readall() == ""
+        assert f.readall() == b""
 
 
 def test_writeonly(temp_dir):
     p = temp_dir.join("test_writeonly.txt")
     with BufferedFileDataStorage(str(p), "w") as f:
-        f.write("foo")
+        f.write(b"foo")
         with pytest.raises(IOError):
             f.read(100)
         f.seek_write(0)
@@ -109,20 +111,20 @@ def test_writeonly(temp_dir):
             f.write(12345)
     with FileDataWriter(str(p)) as f:
         assert f.tell() == 0
-        f.write("abcde")
+        f.write(b"abcde")
         assert f.tell() == 5
 
 
 def test_seeking(temp_dir):
     p = temp_dir.join("test_seeking.txt")
     with BufferedFileDataStorage(str(p), "w+") as f:
-        f.write("abPQRcd")
+        f.write(b"abPQRcd")
         f.seek_read(1, os.SEEK_SET)
-        assert f.read(1) == 'b'
+        assert f.read(1) == b'b'
         f.seek_read(1, os.SEEK_CUR)
-        assert f.read(1) == 'Q'
+        assert f.read(1) == b'Q'
         f.seek_read(-2, os.SEEK_END)
-        assert f.read(1) == 'c'
+        assert f.read(1) == b'c'
         assert f.eof() is False
         f.read(1)
         assert f.eof() is True

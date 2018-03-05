@@ -2,6 +2,7 @@ import atexit
 import os
 import pylru
 import tempfile
+from spinn_utilities.overrides import overrides
 from .abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
 from .utils import file_length
@@ -63,6 +64,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._LRU[self._name] = new
         return new
 
+    @overrides(AbstractBufferedDataStorage.write)
     def write(self, data):
         if not isinstance(data, bytearray):
             raise IOError("can only write bytearrays")
@@ -79,6 +81,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
             f.flush()
         self._flush_pending = False
 
+    @overrides(AbstractBufferedDataStorage.read)
     def read(self, data_size):
         f = self._handle
         self._flush(f)
@@ -87,6 +90,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer += len(data)
         return bytearray(data)
 
+    @overrides(AbstractBufferedDataStorage.readinto)
     def readinto(self, data):
         f = self._handle
         self._flush(f)
@@ -95,6 +99,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer += data_size
         return data_size
 
+    @overrides(AbstractBufferedDataStorage.read_all)
     def read_all(self):
         f = self._handle
         self._flush(f)
@@ -114,24 +119,30 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
             raise IOError("unrecognised 'whence'")
         return max(min(pointer, self._file_len), 0)
 
+    @overrides(AbstractBufferedDataStorage.seek_read)
     def seek_read(self, offset, whence=os.SEEK_SET):
         self._flush()
         self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
+    @overrides(AbstractBufferedDataStorage.seek_write)
     def seek_write(self, offset, whence=os.SEEK_SET):
         self._flush()
         self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
+    @overrides(AbstractBufferedDataStorage.tell_read)
     def tell_read(self):
         return self._read_pointer
 
+    @overrides(AbstractBufferedDataStorage.tell_write)
     def tell_write(self):
         return self._write_pointer
 
+    @overrides(AbstractBufferedDataStorage.eof)
     def eof(self):
         file_len = self._file_len
         return (file_len - self._read_pointer) <= 0
 
+    @overrides(AbstractBufferedDataStorage.close)
     def close(self):
         # Don't need to flush; any pending writes are auto-flushed
         if self._name in self._LRU:
