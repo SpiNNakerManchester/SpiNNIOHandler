@@ -1,6 +1,7 @@
 import os
 from io import BlockingIOError
 from spinn_utilities.overrides import overrides
+from six import raise_from
 
 from .abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
@@ -46,8 +47,8 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         try:
             self._file = open(filename, mode)
         except IOError as e:
-            raise DataReadException(
-                "unable to open file {0}; {1}".format(filename, e))
+            raise_from(DataReadException(
+                "unable to open file {0}; {1}".format(filename, e)), e)
 
     def _flush(self):
         if self._flush_pending:
@@ -67,9 +68,9 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
             self._file.write(data)
             self._flush_pending = True
         except IOError as e:
-            raise DataWriteException(
+            raise_from(DataWriteException(
                 "unable to write {0:d} bytes to file {1:s}: caused by {2}"
-                .format(len(data), self._filename, e))
+                .format(len(data), self._filename, e)), e)
 
         self._write_pointer += len(data)
 
@@ -81,9 +82,9 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         try:
             data = self._file.read(data_size)
         except BlockingIOError as e:   # pragma: no cover
-            raise DataReadException(
+            raise_from(DataReadException(
                 "unable to read {0:d} bytes from file {1:s}; {2}".format(
-                    data_size, self._filename, e))
+                    data_size, self._filename, e)), e)
 
         self._read_pointer += len(data)
         return data
@@ -96,9 +97,9 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         try:
             length = self._file.readinto(data)
         except BlockingIOError as e:   # pragma: no cover
-            raise IOError(
+            raise_from(IOError(
                 "unable to read {0:d} bytes from file {1:s}; {2}".format(
-                    len(data), self._filename, e))
+                    len(data), self._filename, e)), e)
 
         self._read_pointer += length
         return length
@@ -145,11 +146,12 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
     @overrides(AbstractBufferedDataStorage.close)
     def close(self):
+        # pylint: disable=broad-except
         try:
             self._file.close()
         except Exception as e:   # pragma: no cover
-            raise DataReadException(
-                "file {0} cannot be closed; {1}".format(self._filename, e))
+            raise_from(DataReadException(
+                "file {0} cannot be closed; {1}".format(self._filename, e)), e)
 
     @property
     def _file_len(self):
