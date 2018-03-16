@@ -72,10 +72,10 @@ class AbstractByteReader(object):
 
     @abstractmethod
     def read_long(self):
-        """ Reads the next eight bytes as a long value.
+        """ Reads the next eight bytes as an int value.
 
-        :return: A long
-        :rtype: long
+        :return: An int
+        :rtype: int
         :raise IOError: If there is an error reading from the stream
-        :raise EOFError: If there are too few bytes to read a long
+        :raise EOFError: If there are too few bytes to read an int
         """

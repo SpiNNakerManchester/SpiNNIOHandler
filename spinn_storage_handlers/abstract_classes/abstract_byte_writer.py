@@ -64,8 +64,8 @@ class AbstractByteWriter(object):
     def write_long(self, long_value):
         """ Writes an eight byte value.
 
-        :param long_value: The long to write
-        :type long_value: long
+        :param long_value: The 64-bit int to write
+        :type long_value: int
         :return: Nothing is returned
         :rtype: None
         :raise IOError: If there is an error writing to the stream
