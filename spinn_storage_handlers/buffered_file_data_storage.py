@@ -1,10 +1,14 @@
 import os
 from io import BlockingIOError
+from spinn_utilities.overrides import overrides
+from six import raise_from
 
 from .abstract_classes \
     import AbstractBufferedDataStorage, AbstractContextManager
 from .exceptions import DataReadException, DataWriteException
 from .utils import file_length
+
+_ACCEPTABLE_TYPES = (bytearray, str, bytes)
 
 
 class BufferedFileDataStorage(AbstractBufferedDataStorage,
@@ -36,24 +40,27 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer = 0
         self._write_pointer = 0
         self._flush_pending = False
+        if 'b' not in mode:
+            mode += 'b'
 
         # open the file using the real handler
         try:
             self._file = open(filename, mode)
         except IOError as e:
-            raise DataReadException(
-                "unable to open file {0}; {1}".format(filename, e))
+            raise_from(DataReadException(
+                "unable to open file {0}; {1}".format(filename, e)), e)
 
     def _flush(self):
         if self._flush_pending:
             self._file.flush()
         self._flush_pending = False
 
+    @overrides(AbstractBufferedDataStorage.write)
     def write(self, data):
-        if not isinstance(data, (bytearray, str)):
+        if not isinstance(data, _ACCEPTABLE_TYPES):
             raise DataWriteException(
                 "data to write is not in a suitable format (bytearray or "
-                "string). Current data format: {0:s}".format(type(data)))
+                "string). Current data format: {!s}".format(type(data)))
 
         self._file.seek(self._write_pointer)
 
@@ -61,12 +68,13 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
             self._file.write(data)
             self._flush_pending = True
         except IOError as e:
-            raise DataWriteException(
+            raise_from(DataWriteException(
                 "unable to write {0:d} bytes to file {1:s}: caused by {2}"
-                .format(len(data), self._filename, e))
+                .format(len(data), self._filename, e)), e)
 
         self._write_pointer += len(data)
 
+    @overrides(AbstractBufferedDataStorage.read)
     def read(self, data_size):
         self._flush()
         self._file.seek(self._read_pointer)
@@ -74,30 +82,29 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         try:
             data = self._file.read(data_size)
         except BlockingIOError as e:   # pragma: no cover
-            raise DataReadException(
-                "unable to read {0:d} bytes from file {1:s}; {2}"
-                .format(data_size, self._filename, e))
+            raise_from(DataReadException(
+                "unable to read {0:d} bytes from file {1:s}; {2}".format(
+                    data_size, self._filename, e)), e)
 
         self._read_pointer += len(data)
         return data
 
+    @overrides(AbstractBufferedDataStorage.readinto)
     def readinto(self, data):
-        """ See \
-            :py:meth:`spinn_storage_handlers.abstract_classes.AbstractBufferedDataStorage.readinto`
-        """
         self._flush()
         self._file.seek(self._read_pointer)
 
         try:
             length = self._file.readinto(data)
         except BlockingIOError as e:   # pragma: no cover
-            raise IOError(
-                "unable to read {0:d} bytes from file {1:s}; {2}"
-                .format(len(data), self._filename, e))
+            raise_from(IOError(
+                "unable to read {0:d} bytes from file {1:s}; {2}".format(
+                    len(data), self._filename, e)), e)
 
         self._read_pointer += length
         return length
 
+    @overrides(AbstractBufferedDataStorage.read_all)
     def read_all(self):
         self._flush()
         self._file.seek(0)
@@ -116,28 +123,35 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
             raise IOError("unrecognised 'whence'")
         return max(min(pointer, self._file_len), 0)
 
+    @overrides(AbstractBufferedDataStorage.seek_read)
     def seek_read(self, offset, whence=os.SEEK_SET):
         self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
+    @overrides(AbstractBufferedDataStorage.seek_write)
     def seek_write(self, offset, whence=os.SEEK_SET):
         self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
+    @overrides(AbstractBufferedDataStorage.tell_read)
     def tell_read(self):
         return self._read_pointer
 
+    @overrides(AbstractBufferedDataStorage.tell_write)
     def tell_write(self):
         return self._write_pointer
 
+    @overrides(AbstractBufferedDataStorage.eof)
     def eof(self):
         file_len = self._file_len
         return (file_len - self._read_pointer) <= 0
 
+    @overrides(AbstractBufferedDataStorage.close)
     def close(self):
+        # pylint: disable=broad-except
         try:
             self._file.close()
         except Exception as e:   # pragma: no cover
-            raise DataReadException(
-                "file {0} cannot be closed; {1}".format(self._filename, e))
+            raise_from(DataReadException(
+                "file {0} cannot be closed; {1}".format(self._filename, e)), e)
 
     @property
     def _file_len(self):
@@ -153,6 +167,5 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
     def filename(self):
         """
         property method
-
         """
         return self._filename

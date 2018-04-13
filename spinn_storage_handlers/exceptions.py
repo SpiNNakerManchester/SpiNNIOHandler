@@ -10,7 +10,7 @@ class DataReadException(Exception):
     """
 
 
-class BufferedBytearrayOperationNotImplemented(Exception):
-    """ An exception that denotes that the operation required is unavailable
+class BufferedBytearrayOperationNotImplemented(NotImplementedError):
+    """ An exception that denotes that the operation required is unavailable\
         for a byteArray buffer
     """

@@ -9,6 +9,7 @@ def file_length(f):
     :return: The size of the file
     :rtype: int
     """
+    # pylint: disable=broad-except
     try:
         # fstat() is fastest, but cannot guarantee it will work
         return os.fstat(f.fileno()).st_size

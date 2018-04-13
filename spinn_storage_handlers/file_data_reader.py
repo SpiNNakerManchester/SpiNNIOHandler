@@ -1,6 +1,7 @@
 from .buffered_file_data_storage import BufferedFileDataStorage
 from spinn_storage_handlers.abstract_classes import \
     AbstractDataReader, AbstractContextManager
+from spinn_utilities.overrides import overrides
 
 
 class FileDataReader(AbstractDataReader, AbstractContextManager):
@@ -14,7 +15,6 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
 
     def __init__(self, filename):
         """
-
         :param filename: The file to read
         :type filename: str
         :raise spinn_storage_handlers.exceptions.DataReadException: \
@@ -22,37 +22,27 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         """
         self._file_container = BufferedFileDataStorage(filename, "rb")
 
+    @overrides(AbstractDataReader.read)
     def read(self, n_bytes):
-        """ See\
-            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.read`
-        """
         return self._file_container.read(n_bytes)
 
+    @overrides(AbstractDataReader.readall)
     def readall(self):
-        """ See\
-            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readall`
-        """
         return self._file_container.read_all()
 
+    @overrides(AbstractDataReader.readinto)
     def readinto(self, data):
-        """ See\
-            :py:meth:`data_specification.abstract_data_reader.AbstractDataReader.readinto`
-        """
         return self._file_container.readinto(data)
 
+    @overrides(AbstractDataReader.tell)
     def tell(self):
-        """ Returns the position of the file cursor
-
-        :return: Position of the file cursor
-        :rtype: int
-        """
         return self._file_container.tell_read()
 
     def close(self):
         """ Closes the file
 
         :rtype: None
-        :raise spinn_storage_handlers.exceptions.DataReadException: If the\
-                    file cannot be closed
+        :raise spinn_storage_handlers.exceptions.DataReadException: \
+            If the file cannot be closed
         """
         self._file_container.close()
