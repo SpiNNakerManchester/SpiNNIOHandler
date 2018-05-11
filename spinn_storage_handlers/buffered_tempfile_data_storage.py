@@ -1,12 +1,11 @@
-import atexit
 import os
-import pylru
+import atexit
 import tempfile
+import pylru
 from spinn_utilities.overrides import overrides
-from .abstract_classes \
-    import AbstractBufferedDataStorage, AbstractContextManager
+from .abstract_classes import (
+    AbstractBufferedDataStorage, AbstractContextManager)
 from .utils import file_length
-
 
 # Maximum number of entries in the underlying LRU cache
 _LRU_MAX = 100

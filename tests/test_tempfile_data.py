@@ -1,10 +1,9 @@
-from spinn_storage_handlers import BufferedTempfileDataStorage
 import os
 import pytest
+from spinn_storage_handlers import BufferedTempfileDataStorage
 
 testdata = bytearray(b"ABcd1234")
 MANY_TEMP_FILES = 2000
-
 # pylint: disable=protected-access
 
 

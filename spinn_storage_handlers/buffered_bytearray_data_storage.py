@@ -1,9 +1,9 @@
 import os
 from spinn_utilities.overrides import overrides
-from spinn_storage_handlers.abstract_classes \
-    import AbstractContextManager, AbstractBufferedDataStorage
-from spinn_storage_handlers.exceptions import \
-    BufferedBytearrayOperationNotImplemented, DataWriteException
+from spinn_storage_handlers.abstract_classes import (
+    AbstractContextManager, AbstractBufferedDataStorage)
+from spinn_storage_handlers.exceptions import (
+    BufferedBytearrayOperationNotImplemented, DataWriteException)
 
 
 class BufferedBytearrayDataStorage(AbstractBufferedDataStorage,

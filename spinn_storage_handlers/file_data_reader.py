@@ -1,7 +1,7 @@
-from .buffered_file_data_storage import BufferedFileDataStorage
-from spinn_storage_handlers.abstract_classes import \
-    AbstractDataReader, AbstractContextManager
 from spinn_utilities.overrides import overrides
+from .buffered_file_data_storage import BufferedFileDataStorage
+from spinn_storage_handlers.abstract_classes import (
+    AbstractDataReader, AbstractContextManager)
 
 
 class FileDataReader(AbstractDataReader, AbstractContextManager):
