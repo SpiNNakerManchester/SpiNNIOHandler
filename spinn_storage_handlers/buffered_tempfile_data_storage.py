@@ -54,7 +54,7 @@ class BufferedTempfileDataStorage(AbstractBufferedDataStorage,
 
     @property
     def _handle(self):
-        """A handle to the file that we can actually read or write through.
+        """ A handle to the file that we can actually read or write through.
 
         :rtype: file
         """

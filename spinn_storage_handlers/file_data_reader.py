@@ -5,7 +5,7 @@ from spinn_utilities.overrides import overrides
 
 
 class FileDataReader(AbstractDataReader, AbstractContextManager):
-    """ A reader that can read data from a file
+    """ A reader that can read data from a file.
     """
 
     __slots__ = [
@@ -38,8 +38,9 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
     def tell(self):
         return self._file_container.tell_read()
 
+    @overrides(AbstractContextManager.close, extend_doc=False)
     def close(self):
-        """ Closes the file
+        """ Closes the file.
 
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataReadException: \

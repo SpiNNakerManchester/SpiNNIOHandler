@@ -41,7 +41,7 @@ class AbstractByteReader(object):
 
         :param size: The number of bytes to read, or None to read all of the\
             remaining bytes.
-        :type size: int
+        :type size: int or None
         :return: An array of bytes
         :rtype: bytearray
         :raise IOError: If there is an error reading from the stream

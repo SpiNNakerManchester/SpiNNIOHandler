@@ -2,7 +2,7 @@ import os
 
 
 def file_length(f):
-    """The size of an open file.
+    """ The size of an open file.
 
     :param f: The file to get the size of
     :type f: file

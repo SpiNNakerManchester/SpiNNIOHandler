@@ -27,8 +27,9 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
     def tell(self):
         return self._file_container.tell_write()
 
+    @overrides(AbstractContextManager.close, extend_doc=False)
     def close(self):
-        """ Closes the file
+        """ Closes the file.
 
         :rtype: None
         :raise spinn_storage_handlers.exceptions.DataWriteException: \
@@ -38,7 +39,6 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
 
     @property
     def filename(self):
-        """
-        property method
+        """ The name of the file that is being written to.
         """
         return self._file_container.filename

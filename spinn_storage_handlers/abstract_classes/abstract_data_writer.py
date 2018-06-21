@@ -16,7 +16,7 @@ class AbstractDataWriter(object):
             Does not return until all the bytes have been written.
 
         :param data: The data to write
-        :type data: bytearray
+        :type data: bytearray or bytes
         :return: Nothing is returned
         :rtype: None
         :raise IOError: If an error occurs writing to the underlying storage

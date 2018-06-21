@@ -155,7 +155,7 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
     @property
     def _file_len(self):
-        """The size of the file.
+        """ The size of the file.
 
         :return: The size of the file
         :rtype: int
@@ -165,7 +165,6 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
     @property
     def filename(self):
-        """
-        property method
+        """ The name of the file.
         """
         return self._filename
