@@ -39,6 +39,6 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
 
     @property
     def filename(self):
-        """ The name of the file that is being written to. 
+        """ The name of the file that is being written to.
         """
         return self._file_container.filename
