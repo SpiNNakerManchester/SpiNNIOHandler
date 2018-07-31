@@ -1,12 +1,9 @@
 # general imports
+import os
+import logging
 from six import add_metaclass
 
 from spinn_utilities.abstract_base import AbstractBase, abstractmethod
-
-
-import os
-import logging
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,7 @@
 from spinn_storage_handlers import BufferedTempfileDataStorage
 import os
 import pytest
+import six
 
 testdata = bytearray(b"ABcd1234")
 MANY_TEMP_FILES = 2000
@@ -44,8 +45,8 @@ def test_lots_of_tempfiles():
 def test_basic_ops():
     with BufferedTempfileDataStorage() as f:
         with pytest.raises(IOError):
-            f.write(b"abcde")
-        f.write(bytearray(b"abcde"))
+            f.write(six.text_type("abcde"))
+        f.write(b"abcde")
         f.seek_write(3)
         f.write(bytearray(b"ba"))
         f.seek_read(1)
