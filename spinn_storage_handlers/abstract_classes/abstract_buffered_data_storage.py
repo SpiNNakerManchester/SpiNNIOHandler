@@ -1,12 +1,9 @@
 # general imports
+import os
+import logging
 from six import add_metaclass
 
 from spinn_utilities.abstract_base import AbstractBase, abstractmethod
-
-
-import os
-import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -68,10 +65,10 @@ class AbstractBufferedDataStorage(object):
         :param offset: Position of the read pointer within the buffer
         :type offset: int
         :param whence: One of:
-                * os.SEEK_SET which means absolute buffer positioning (default)
-                * os.SEEK_CUR which means seek relative to the current\
-                  read position
-                * os.SEEK_END which means seek relative to the buffer's end
+            * `os.SEEK_SET` which means absolute buffer positioning (default)
+            * `os.SEEK_CUR` which means seek relative to the current read\
+              position
+            * `os.SEEK_END` which means seek relative to the buffer's end
         :rtype: None
         """
 
@@ -82,10 +79,10 @@ class AbstractBufferedDataStorage(object):
         :param offset: Position of the write pointer within the buffer
         :type offset: int
         :param whence: One of:
-                * os.SEEK_SET which means absolute buffer positioning (default)
-                * os.SEEK_CUR which means seek relative to the current\
-                  write position
-                * os.SEEK_END which means seek relative to the buffer's end
+            * `os.SEEK_SET` which means absolute buffer positioning (default)
+            * `os.SEEK_CUR` which means seek relative to the current write\
+              position
+            * `os.SEEK_END` which means seek relative to the buffer's end
         :rtype: None
         """
 

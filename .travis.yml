@@ -13,7 +13,7 @@ before_install:
 before_script:
   - python ./setup.py install
   - pip install -r requirements-test.txt
-  - pip install python-coveralls
+  - pip install python-coveralls 'coverage>=4.4'
 
 script:
   - py.test tests --cov spinn_storage_handlers

@@ -32,7 +32,7 @@ class AbstractByteWriter(object):
         """ Writes a set of bytes.
 
         :param byte_iterable: The bytes to write
-        :type byte_iterable: iterable of bytes
+        :type byte_iterable: bytes or bytearray or iterable(bytes or bytearray)
         :return: Nothing is returned
         :rtype: None
         :raise IOError: If there is an error writing to the stream

@@ -14,7 +14,7 @@ class AbstractDataReader(object):
     def read(self, n_bytes):
         """ Read some bytes of data from the underlying storage.  Will block\
             until some bytes are available, but might not return the full\
-            n_bytes.  The size of the returned array indicates how many\
+            `n_bytes`.  The size of the returned array indicates how many\
             bytes were read.
 
         :param n_bytes: The number of bytes to read
