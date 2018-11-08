@@ -1,7 +1,7 @@
-from .buffered_file_data_storage import BufferedFileDataStorage
-from spinn_storage_handlers.abstract_classes import \
-    AbstractDataWriter, AbstractContextManager
 from spinn_utilities.overrides import overrides
+from .buffered_file_data_storage import BufferedFileDataStorage
+from spinn_storage_handlers.abstract_classes import (
+    AbstractDataWriter, AbstractContextManager)
 
 
 class FileDataWriter(AbstractDataWriter, AbstractContextManager):

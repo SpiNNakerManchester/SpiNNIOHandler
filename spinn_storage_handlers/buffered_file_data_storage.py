@@ -1,10 +1,9 @@
 import os
 from io import BlockingIOError
-from spinn_utilities.overrides import overrides
 from six import raise_from
-
-from .abstract_classes \
-    import AbstractBufferedDataStorage, AbstractContextManager
+from spinn_utilities.overrides import overrides
+from .abstract_classes import (
+    AbstractBufferedDataStorage, AbstractContextManager)
 from .exceptions import DataReadException, DataWriteException
 from .utils import file_length
 
