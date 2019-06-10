@@ -1,8 +1,8 @@
-from spinn_storage_handlers import BufferedBytearrayDataStorage
-from spinn_storage_handlers.exceptions \
-    import DataWriteException, BufferedBytearrayOperationNotImplemented
-import pytest
 import os
+import pytest
+from spinn_storage_handlers import BufferedBytearrayDataStorage
+from spinn_storage_handlers.exceptions import (
+    DataWriteException, BufferedBytearrayOperationNotImplemented)
 
 testdata = bytearray(b"ABcd1234")
 
