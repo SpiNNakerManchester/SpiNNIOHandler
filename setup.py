@@ -53,9 +53,28 @@ setup(
     description="I/O handler classes for SpiNNaker software stack",
     url="https://github.com/SpiNNakerManchester/SpiNNStorageHandlers",
     license="GNU GPLv3.0",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+
+        "Natural Language :: English",
+
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS",
+
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+    ],
     packages=packages,
     package_data=package_data,
-    install_requires=['SpiNNUtilities >= 1!4.0.1, < 1!5.0.0',
+    install_requires=['SpiNNUtilities >= 1!5.0.1, < 1!6.0.0',
                       'pylru >= 1', 'six'],
     maintainer="SpiNNakerTeam",
     maintainer_email="spinnakerusers@googlegroups.com"
