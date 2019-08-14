@@ -14,19 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from io import BlockingIOError
+from io import BlockingIOError  # pylint: disable=redefined-builtin
 from six import raise_from
-from spinn_utilities.overrides import overrides
-from .abstract_classes import (
-    AbstractBufferedDataStorage, AbstractContextManager)
+from .abstract_classes import AbstractContextManager
 from .exceptions import DataReadException, DataWriteException
 from .utils import file_length
 
 _ACCEPTABLE_TYPES = (bytearray, str, bytes)
 
 
-class BufferedFileDataStorage(AbstractBufferedDataStorage,
-                              AbstractContextManager):
+class _BufferedFileDataStorage(AbstractContextManager):
     """ Data storage based on a temporary file with two pointers, one for\
         reading and one for writing.
     """
@@ -69,8 +66,14 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
             self._file.flush()
         self._flush_pending = False
 
-    @overrides(AbstractBufferedDataStorage.write)
     def write(self, data):
+        """ Store data in the data storage in the position indicated by\
+            the write pointer index.
+
+        :param data: the data to be stored
+        :type data: bytearray
+        :rtype: None
+        """
         if not isinstance(data, _ACCEPTABLE_TYPES):
             raise DataWriteException(
                 "data to write is not in a suitable format (bytearray or "
@@ -88,8 +91,15 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
 
         self._write_pointer += len(data)
 
-    @overrides(AbstractBufferedDataStorage.read)
     def read(self, data_size):
+        """ Read data from the data storage from the position indicated by\
+            the read pointer index.
+
+        :param data_size: number of bytes to be read
+        :type data_size: int
+        :return: a bytearray containing the data read
+        :rtype: bytearray
+        """
         self._flush()
         self._file.seek(self._read_pointer)
 
@@ -103,8 +113,17 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer += len(data)
         return data
 
-    @overrides(AbstractBufferedDataStorage.readinto)
     def readinto(self, data):
+        """ Read some bytes of data from the underlying storage into a\
+            predefined array.  Will block until some bytes are available,\
+            but may not fill the array completely.
+
+        :param data: The place where the data is to be stored
+        :type data: bytearray
+        :return: The number of bytes stored in data
+        :rtype: int
+        :raise IOError: If an error occurs reading from the underlying storage
+        """
         self._flush()
         self._file.seek(self._read_pointer)
 
@@ -118,8 +137,13 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
         self._read_pointer += length
         return length
 
-    @overrides(AbstractBufferedDataStorage.read_all)
     def read_all(self):
+        """ Read all the data contained in the data storage starting from\
+            position 0 to the end.
+
+        :return: a bytearray containing the data read
+        :rtype: bytearray
+        """
         self._flush()
         self._file.seek(0)
         data = self._file.read()
@@ -137,29 +161,66 @@ class BufferedFileDataStorage(AbstractBufferedDataStorage,
             raise IOError("unrecognised 'whence'")
         return max(min(pointer, self._file_len), 0)
 
-    @overrides(AbstractBufferedDataStorage.seek_read)
     def seek_read(self, offset, whence=os.SEEK_SET):
+        """ Set the data storage's current read position to the offset.
+
+        :param offset: Position of the read pointer within the buffer
+        :type offset: int
+        :param whence: One of:
+            * `os.SEEK_SET` which means absolute buffer positioning (default)
+            * `os.SEEK_CUR` which means seek relative to the current read\
+              position
+            * `os.SEEK_END` which means seek relative to the buffer's end
+        :rtype: None
+        """
         self._read_pointer = self.__seek(self._read_pointer, offset, whence)
 
-    @overrides(AbstractBufferedDataStorage.seek_write)
     def seek_write(self, offset, whence=os.SEEK_SET):
+        """ Set the data storage's current write position to the offset.
+
+        :param offset: Position of the write pointer within the buffer
+        :type offset: int
+        :param whence: One of:
+            * `os.SEEK_SET` which means absolute buffer positioning (default)
+            * `os.SEEK_CUR` which means seek relative to the current write\
+              position
+            * `os.SEEK_END` which means seek relative to the buffer's end
+        :rtype: None
+        """
         self._write_pointer = self.__seek(self._write_pointer, offset, whence)
 
-    @overrides(AbstractBufferedDataStorage.tell_read)
     def tell_read(self):
+        """ The current position of the read pointer.
+
+        :return: The current position of the read pointer
+        :rtype: int
+        """
         return self._read_pointer
 
-    @overrides(AbstractBufferedDataStorage.tell_write)
     def tell_write(self):
+        """ The current position of the write pointer.
+
+        :return: The current position of the write pointer
+        :rtype: int
+        """
         return self._write_pointer
 
-    @overrides(AbstractBufferedDataStorage.eof)
     def eof(self):
+        """ Check if the read pointer is a the end of the data storage.
+
+        :return: Whether the read pointer is at the end of the data storage
+        :rtype: bool
+        """
         file_len = self._file_len
         return (file_len - self._read_pointer) <= 0
 
-    @overrides(AbstractBufferedDataStorage.close)
     def close(self):
+        """ Closes the data storage.
+
+        :rtype: None
+        :raise spinn_storage_handlers.exceptions.DataReadException: \
+            If the data storage cannot be closed
+        """
         # pylint: disable=broad-except
         try:
             self._file.close()

@@ -14,8 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from spinn_utilities.overrides import overrides
-from .buffered_file_data_storage import BufferedFileDataStorage
-from spinn_storage_handlers.abstract_classes import (
+from .buffered_file_data_storage import _BufferedFileDataStorage
+from .abstract_classes import (
     AbstractDataWriter, AbstractContextManager)
 
 
@@ -32,7 +32,7 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataWriteException: \
             If the file cannot found or opened for writing
         """
-        self._file_container = BufferedFileDataStorage(filename, "w+b")
+        self._file_container = _BufferedFileDataStorage(filename, "w+b")
 
     @overrides(AbstractDataWriter.write)
     def write(self, data):

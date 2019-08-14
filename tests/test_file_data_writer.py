@@ -27,18 +27,18 @@ class TestFileDataWriter(unittest.TestCase):
         return os.path.join(self._dir, "files_data_writer", filename)
 
     def test_write_one_byte(self):
-        self.writer = FileDataWriter(self._file('txt_one_byte'))
-        self.writer.write(bytearray([0]))
-        self.writer.close()
+        writer = FileDataWriter(self._file('txt_one_byte'))
+        writer.write(bytearray([0]))
+        writer.close()
 
         with open(self._file('txt_one_byte'), "r") as file_handle:
             self.assertEqual(file_handle.read(1), '\x00')
             self.assertEqual(file_handle.read(1), '')
 
     def test_write_five_bytes(self):
-        self.writer = FileDataWriter(self._file('txt_5_bytes'))
-        self.writer.write(bytearray([1, 2, 3, 4, 5]))
-        self.writer.close()
+        writer = FileDataWriter(self._file('txt_5_bytes'))
+        writer.write(bytearray([1, 2, 3, 4, 5]))
+        writer.close()
 
         with open(self._file('txt_5_bytes'), "r") as file_handle:
             self.assertEqual(file_handle.read(1), '\x01')
@@ -49,9 +49,9 @@ class TestFileDataWriter(unittest.TestCase):
             self.assertEqual(file_handle.read(1), '')
 
     def test_write_from_empty_file(self):
-        self.writer = FileDataWriter(self._file('txt_empty'))
-        self.writer.write(bytearray())
-        self.writer.close()
+        writer = FileDataWriter(self._file('txt_empty'))
+        writer.write(bytearray())
+        writer.close()
 
         with open(self._file('txt_empty'), "r") as file_handle:
             self.assertEqual(file_handle.read(1), '')
