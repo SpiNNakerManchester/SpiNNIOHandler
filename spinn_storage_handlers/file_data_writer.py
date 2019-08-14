@@ -39,6 +39,11 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         except IOError as e:
             raise DataWriteException(str(e))
 
+    def flush(self):
+        """ Ensure that any buffers we have are written to disk.
+        """
+        self._file_container.flush()
+
     @overrides(AbstractDataWriter.write)
     def write(self, data):
         self._file_container.write(data)
