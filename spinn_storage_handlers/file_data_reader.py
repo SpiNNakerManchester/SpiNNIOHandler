@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 from spinn_utilities.overrides import overrides
-from .storage import _Storage
-from .abstract_classes import (
-    AbstractDataReader, AbstractContextManager)
+from .abstract_classes import AbstractDataReader, AbstractContextManager
+from .exceptions import DataReadException
 
 
 class FileDataReader(AbstractDataReader, AbstractContextManager):
@@ -35,7 +35,10 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataReadException: \
             If the file cannot found or opened for reading
         """
-        self._file_container = _Storage(filename, "rb")
+        try:
+            self._file_container = io.open(filename, mode="rb")
+        except IOError as e:
+            raise DataReadException(str(e))
 
     @overrides(AbstractDataReader.read)
     def read(self, n_bytes):
@@ -43,7 +46,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
 
     @overrides(AbstractDataReader.readall)
     def readall(self):
-        return self._file_container.read_all()
+        return self._file_container.read()
 
     @overrides(AbstractDataReader.readinto)
     def readinto(self, data):
@@ -51,7 +54,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
 
     @overrides(AbstractDataReader.tell)
     def tell(self):
-        return self._file_container.tell_read()
+        return self._file_container.tell()
 
     @overrides(AbstractContextManager.close, extend_doc=False)
     def close(self):

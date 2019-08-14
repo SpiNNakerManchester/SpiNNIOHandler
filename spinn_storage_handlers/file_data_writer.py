@@ -13,16 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 from spinn_utilities.overrides import overrides
-from .storage import _Storage
-from .abstract_classes import (
-    AbstractDataWriter, AbstractContextManager)
+from .abstract_classes import AbstractDataWriter, AbstractContextManager
+from .exceptions import DataWriteException
 
 
 class FileDataWriter(AbstractDataWriter, AbstractContextManager):
     __slots__ = [
         # the file container
-        "_file_container"
+        "_file_container",
+        "_filename"
     ]
 
     def __init__(self, filename):
@@ -32,7 +33,11 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataWriteException: \
             If the file cannot found or opened for writing
         """
-        self._file_container = _Storage(filename, "w+b")
+        self._filename = filename
+        try:
+            self._file_container = io.open(filename, mode="w+b")
+        except IOError as e:
+            raise DataWriteException(str(e))
 
     @overrides(AbstractDataWriter.write)
     def write(self, data):
@@ -40,7 +45,8 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
 
     @overrides(AbstractDataWriter.tell)
     def tell(self):
-        return self._file_container.tell_write()
+        self._file_container.flush()
+        return self._file_container.tell()
 
     @overrides(AbstractContextManager.close, extend_doc=False)
     def close(self):
@@ -56,4 +62,4 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
     def filename(self):
         """ The name of the file that is being written to.
         """
-        return self._file_container.filename
+        return self._filename
