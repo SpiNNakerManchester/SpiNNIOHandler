@@ -23,7 +23,7 @@ from .utils import file_length
 _ACCEPTABLE_TYPES = (bytearray, str, bytes)
 
 
-class _BufferedFileDataStorage(AbstractContextManager):
+class _Storage(AbstractContextManager):
     """ Data storage based on a temporary file with two pointers, one for\
         reading and one for writing.
     """

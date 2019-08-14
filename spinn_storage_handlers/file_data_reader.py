@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from spinn_utilities.overrides import overrides
-from .storage import _BufferedFileDataStorage
+from .storage import _Storage
 from .abstract_classes import (
     AbstractDataReader, AbstractContextManager)
 
@@ -35,7 +35,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataReadException: \
             If the file cannot found or opened for reading
         """
-        self._file_container = _BufferedFileDataStorage(filename, "rb")
+        self._file_container = _Storage(filename, "rb")
 
     @overrides(AbstractDataReader.read)
     def read(self, n_bytes):
