@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from spinn_utilities.overrides import overrides
-from .buffered_file_data_storage import _BufferedFileDataStorage
+from .storage import _BufferedFileDataStorage
 from .abstract_classes import (
     AbstractDataReader, AbstractContextManager)
 

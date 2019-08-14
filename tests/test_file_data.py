@@ -17,9 +17,8 @@ import os
 import pytest
 from spinn_storage_handlers.exceptions import (
     DataReadException, DataWriteException)
-from spinn_storage_handlers import (FileDataReader, FileDataWriter)
-from spinn_storage_handlers.buffered_file_data_storage import (
-    _BufferedFileDataStorage)
+from spinn_storage_handlers import FileDataReader, FileDataWriter
+from spinn_storage_handlers.storage import _BufferedFileDataStorage
 
 testdata = bytearray(b"ABcd1234")
 # pylint: disable=redefined-outer-name, broad-except, protected-access
