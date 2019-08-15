@@ -48,8 +48,12 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
     def write(self, data):
         self._file_container.write(data)
 
-    @overrides(AbstractDataWriter.tell)
     def tell(self):
+        """ Returns the position of the file cursor.
+
+        :return: Position of the file cursor
+        :rtype: int
+        """
         self._file_container.flush()
         return self._file_container.tell()
 

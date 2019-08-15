@@ -44,12 +44,26 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
     def read(self, n_bytes):
         return self._file_container.read(n_bytes)
 
-    @overrides(AbstractDataReader.readall)
     def readall(self):
+        """ Read the rest of the bytes from the underlying stream.
+
+        :return: The bytes read
+        :rtype: bytearray
+        :raise IOError: If there is an error obtaining the bytes
+        """
         return self._file_container.read()
 
-    @overrides(AbstractDataReader.readinto)
     def readinto(self, data):
+        """ Read some bytes of data from the underlying storage into a\
+            predefined array.  Will block until some bytes are available,\
+            but may not fill the array completely.
+
+        :param data: The place where the data is to be stored
+        :type data: bytearray
+        :return: The number of bytes stored in data
+        :rtype: int
+        :raise IOError: If an error occurs reading from the underlying storage
+        """
         return self._file_container.readinto(data)
 
     @overrides(AbstractDataReader.tell)

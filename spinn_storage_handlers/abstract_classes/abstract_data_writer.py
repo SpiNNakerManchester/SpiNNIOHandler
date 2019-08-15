@@ -35,11 +35,3 @@ class AbstractDataWriter(object):
         :rtype: None
         :raise IOError: If an error occurs writing to the underlying storage
         """
-
-    @abstractmethod
-    def tell(self):
-        """ Returns the position of the file cursor.
-
-        :return: Position of the file cursor
-        :rtype: int
-        """
