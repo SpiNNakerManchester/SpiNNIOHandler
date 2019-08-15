@@ -65,7 +65,10 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataWriteException: \
             If the file cannot be closed
         """
-        self._file_container.close()
+        try:
+            self._file_container.close()
+        except IOError as e:
+            raise DataWriteException(str(e))
 
     @property
     def filename(self):

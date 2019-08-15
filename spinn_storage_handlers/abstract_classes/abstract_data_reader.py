@@ -25,15 +25,16 @@ class AbstractDataReader(object):
     __slots__ = []
 
     @abstractmethod
-    def read(self, n_bytes):
+    def read(self, n_bytes=None):
         """ Read some bytes of data from the underlying storage.  Will block\
             until some bytes are available, but might not return the full\
             `n_bytes`.  The size of the returned array indicates how many\
             bytes were read.
 
-        :param n_bytes: The number of bytes to read
+        :param n_bytes: The number of bytes to read; if unspecified, read all\
+            remaining bytes
         :type n_bytes: int
-        :return: An array of bytes
+        :return: The data that was read
         :rtype: bytearray
         :raise IOError: If an error occurs reading from the underlying storage
         """

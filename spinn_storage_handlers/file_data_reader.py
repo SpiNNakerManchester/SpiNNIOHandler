@@ -41,17 +41,8 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
             raise DataReadException(str(e))
 
     @overrides(AbstractDataReader.read)
-    def read(self, n_bytes):
+    def read(self, n_bytes=None):
         return self._file_container.read(n_bytes)
-
-    def readall(self):
-        """ Read the rest of the bytes from the underlying stream.
-
-        :return: The bytes read
-        :rtype: bytearray
-        :raise IOError: If there is an error obtaining the bytes
-        """
-        return self._file_container.read()
 
     def readinto(self, data):
         """ Read some bytes of data from the underlying storage into a\
@@ -78,4 +69,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         :raise spinn_storage_handlers.exceptions.DataReadException: \
             If the file cannot be closed
         """
-        self._file_container.close()
+        try:
+            self._file_container.close()
+        except IOError as e:
+            raise DataReadException(str(e))

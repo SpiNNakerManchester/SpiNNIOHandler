@@ -43,7 +43,7 @@ def test_read_file(temp_dir):
     fdr = FileDataReader(str(p))
 
     assert fdr is not None
-    assert len(fdr.readall()) == len(testdata)
+    assert len(fdr.read()) == len(testdata)
 
     fdr.close()
 
@@ -75,8 +75,6 @@ def test_readonly(temp_dir):
         assert f.read(100) == b""
         assert f.tell() == 0
         assert f.readinto(bytearray(100)) == 0
-        assert f.tell() == 0
-        assert f.readall() == b""
 
 
 def test_writeonly(temp_dir):
