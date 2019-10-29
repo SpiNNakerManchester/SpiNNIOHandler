@@ -360,4 +360,7 @@ for f in os.listdir("."):
     if (os.path.isfile(f) and f.endswith(
             ".rst") and f != "index.rst" and f != "modules.rst"):
         os.remove(f)
-apidoc.main([None, '-o', ".", "../../spinn_storage_handlers"])
+apidoc.main([None, '-o', ".", "../../spinn_storage_handlers",
+             # Excludes
+             "../../spinn_storage_handlers/f*.py",
+             "../../spinn_storage_handlers/*/a*.py"])

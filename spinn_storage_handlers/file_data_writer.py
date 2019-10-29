@@ -15,7 +15,8 @@
 
 import io
 from spinn_utilities.overrides import overrides
-from .abstract_classes import AbstractDataWriter, AbstractContextManager
+from spinn_storage_handlers.abstract_classes import (
+    AbstractDataWriter, AbstractContextManager)
 from .exceptions import DataWriteException
 
 
@@ -30,7 +31,7 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         """
         :param filename: The file to write to
         :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataWriteException: \
+        :raise DataWriteException: \
             If the file cannot found or opened for writing
         """
         self._filename = filename
@@ -62,8 +63,7 @@ class FileDataWriter(AbstractDataWriter, AbstractContextManager):
         """ Closes the file.
 
         :rtype: None
-        :raise spinn_storage_handlers.exceptions.DataWriteException: \
-            If the file cannot be closed
+        :raise DataWriteException: If the file cannot be closed
         """
         try:
             self._file_container.close()

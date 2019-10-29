@@ -15,7 +15,8 @@
 
 import io
 from spinn_utilities.overrides import overrides
-from .abstract_classes import AbstractDataReader, AbstractContextManager
+from spinn_storage_handlers.abstract_classes import (
+    AbstractDataReader, AbstractContextManager)
 from .exceptions import DataReadException
 
 
@@ -32,7 +33,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         """
         :param filename: The file to read
         :type filename: str
-        :raise spinn_storage_handlers.exceptions.DataReadException: \
+        :raise DataReadException: \
             If the file cannot found or opened for reading
         """
         try:
@@ -66,8 +67,7 @@ class FileDataReader(AbstractDataReader, AbstractContextManager):
         """ Closes the file.
 
         :rtype: None
-        :raise spinn_storage_handlers.exceptions.DataReadException: \
-            If the file cannot be closed
+        :raise DataReadException: If the file cannot be closed
         """
         try:
             self._file_container.close()
