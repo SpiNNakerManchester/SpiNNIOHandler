@@ -18,7 +18,7 @@ Contents:
 .. toctree::
    :maxdepth: 4
 
-   spinn_storage_handlers
+   modules
 
 
 Indices and tables
